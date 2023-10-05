@@ -33,9 +33,6 @@ public class ModVillagers {
     public static final RegistryObject<PoiType> CREATE_MECHANIC_POI = POI_TYPES.register("create_mechanic_poi",
             () -> new PoiType(ImmutableSet.copyOf(AllBlocks.TRACK_STATION.get().getStateDefinition().getPossibleStates()),
                     1, 2));
-    public static final RegistryObject<PoiType> CREATE_LUMBERJACK_POI = POI_TYPES.register("create_lumberjack_poi",
-            () -> new PoiType(ImmutableSet.copyOf(AllBlocks.MECHANICAL_SAW.get().getStateDefinition().getPossibleStates()),
-                    1, 2));
 
 
 
@@ -55,10 +52,6 @@ public class ModVillagers {
             () -> new VillagerProfession("miner", x -> x.get() == CREATE_MINER_POI.get(),
                     x -> x.get() == CREATE_MINER_POI.get(), ImmutableSet.of(), ImmutableSet.of(),
                     SoundEvents.VILLAGER_WORK_MASON));
-    public static final RegistryObject<VillagerProfession> LUMBERJACK = VILLAGER_PROFESSIONS.register("lumberjack",
-            () -> new VillagerProfession("lumberjack", x -> x.get() == CREATE_LUMBERJACK_POI.get(),
-                    x -> x.get() == CREATE_LUMBERJACK_POI.get(), ImmutableSet.of(), ImmutableSet.of(),
-                    SoundEvents.VILLAGER_WORK_LEATHERWORKER));
 
 
 
@@ -73,8 +66,6 @@ public class ModVillagers {
                     "registerBlockStates", PoiType.class).invoke(null, CREATE_MECHANIC_POI.get());
             ObfuscationReflectionHelper.findMethod(PoiType.class,
                     "registerBlockStates", PoiType.class).invoke(null, CREATE_MINER_POI.get());
-            ObfuscationReflectionHelper.findMethod(PoiType.class,
-                    "registerBlockStates", PoiType.class).invoke(null, CREATE_LUMBERJACK_POI.get());
 
 
         } catch (InvocationTargetException | IllegalAccessException exception) {
