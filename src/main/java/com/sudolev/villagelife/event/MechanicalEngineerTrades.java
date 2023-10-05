@@ -6,7 +6,6 @@ import com.simibubi.create.AllItems;
 import com.sudolev.villagelife.VillageLife;
 import com.sudolev.villagelife.villager.ModVillagers;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -18,7 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = VillageLife.MODID)
-public class ModEvents {
+public class MechanicalEngineerTrades {
     @SubscribeEvent
     public static void addCustomTrades(VillagerTradesEvent event) {
         if(event.getType() == ModVillagers.MECHANICAL_ENGINEER.get()) {
@@ -127,10 +126,6 @@ public class ModEvents {
                     new ItemStack(Items.EMERALD, 3),
                     new ItemStack(AllBlocks.MECHANICAL_CRAFTER.get(), 2),
                     8,12,0.01F));
-
-
-
-
         }
     }
 }

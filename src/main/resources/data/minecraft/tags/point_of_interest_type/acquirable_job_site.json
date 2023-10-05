@@ -1,0 +1,9 @@
+{
+  "values": [
+    "create:large_water_wheel",
+    "create:spout",
+    "create:track_station",
+    "create:mechanical_drill",
+    "create:mechanical_saw"
+  ]
+}

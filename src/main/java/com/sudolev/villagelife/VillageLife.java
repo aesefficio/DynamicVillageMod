@@ -1,6 +1,7 @@
 package com.sudolev.villagelife;
 
 import com.mojang.logging.LogUtils;
+import com.sudolev.villagelife.ModItems.ModItems;
 import com.sudolev.villagelife.villager.ModVillagers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.BlockItem;
@@ -38,8 +39,13 @@ public class VillageLife
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         modEventBus.addListener(this::commonSetup);
-        MinecraftForge.EVENT_BUS.register(this);
-    }
+
+        ModItems.register(modEventBus);
+        ModVillagers.register(modEventBus);
+
+        modEventBus.addListener(this::commonSetup);
+
+        MinecraftForge.EVENT_BUS.register(this);    }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
