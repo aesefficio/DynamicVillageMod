@@ -1,6 +1,7 @@
 package com.sudolev.villagelife;
 
 import com.mojang.logging.LogUtils;
+import com.sudolev.villagelife.villager.ModVillagers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -40,8 +41,10 @@ public class VillageLife
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event)
-    {
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            ModVillagers.registerPOIs();
+        });
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
