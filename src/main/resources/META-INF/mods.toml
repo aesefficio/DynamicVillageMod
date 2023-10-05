@@ -19,7 +19,7 @@ modId="villagelife" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
 # ${file.jarVersion} will substitute the value of the Implementation-Version as read from the mod's JAR file metadata
 # see the associated build.gradle script for how to populate this completely automatically during a build
-version="${file.jarVersion}" #mandatory
+version="0.1" #mandatory
  # A display name for the mod
 displayName="Create: Village Life" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
@@ -61,13 +61,13 @@ description='''
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.19.2,1.20)"
+    versionRange="[1.19,1.20)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.modid]]
 modId="create"
 mandatory=true
-versionRange="[0.5.1.e,)"
+versionRange="[0.5.0a,)"
 ordering="NONE"
 side="BOTH"
