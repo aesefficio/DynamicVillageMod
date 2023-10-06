@@ -22,19 +22,17 @@ public class ModVillagers {
 
     public static final RegistryObject<PoiType> CREATE_ENGINEER_POI = POI_TYPES.register("create_engineer_poi",
             () -> new PoiType(ImmutableSet.copyOf(AllBlocks.LARGE_WATER_WHEEL.get().getStateDefinition().getPossibleStates()),
-                    1, 4));
+                    1, 1));
     public static final RegistryObject<PoiType> CREATE_HYDRAULIC_ENGINEER_POI = POI_TYPES.register("create_hydraulic_engineer_poi",
             () -> new PoiType(ImmutableSet.copyOf(AllBlocks.SPOUT.get().getStateDefinition().getPossibleStates()),
-                    1, 3));
+                    1, 1));
     public static final RegistryObject<PoiType> CREATE_MINER_POI = POI_TYPES.register("create_miner_poi",
             () -> new PoiType(ImmutableSet.copyOf(AllBlocks.MECHANICAL_DRILL.get().getStateDefinition().getPossibleStates()),
-                    1, 2));
+                    1, 1));
 
     public static final RegistryObject<PoiType> CREATE_MECHANIC_POI = POI_TYPES.register("create_mechanic_poi",
             () -> new PoiType(ImmutableSet.copyOf(AllBlocks.TRACK_STATION.get().getStateDefinition().getPossibleStates()),
-                    1, 2));
-
-
+                    1, 1));
 
     public static final RegistryObject<VillagerProfession> MECHANICAL_ENGINEER = VILLAGER_PROFESSIONS.register("mechanical_engineer",
             () -> new VillagerProfession("mechanical_engineer", x -> x.get() == CREATE_ENGINEER_POI.get(),

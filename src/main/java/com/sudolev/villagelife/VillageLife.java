@@ -43,8 +43,6 @@ public class VillageLife
         ModItems.register(modEventBus);
         ModVillagers.register(modEventBus);
 
-        modEventBus.addListener(this::commonSetup);
-
         MinecraftForge.EVENT_BUS.register(this);    }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -52,7 +50,6 @@ public class VillageLife
             ModVillagers.registerPOIs();
         });
     }
-
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)

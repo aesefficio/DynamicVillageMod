@@ -1,9 +1,8 @@
 {
   "values": [
-    "create:large_water_wheel",
-    "create:spout",
-    "create:track_station",
-    "create:mechanical_drill",
-    "create:mechanical_saw"
+    "villagelife:create_engineer_poi",
+    "villagelife:create_hydraulic_engineer_poi",
+    "villagelife:create_miner_poi",
+    "villagelife:create_mechanic_poi"
   ]
 }
