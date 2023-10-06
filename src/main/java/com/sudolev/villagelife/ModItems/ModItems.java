@@ -19,8 +19,6 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, VillageLife.MODID);
 
-    public static final RegistryObject<Item> MECHANICAL_ENGINEER_SPAWN_EGG = ITEMS.register("mechanical_engineer_spawn_egg",
-            () -> new ForgeSpawnEggItem(([WHAT GOES HERE], 111111111, 111111111, new Item.Properties().tab(ModCreativeModeTabs.VILLAGE_LIFE_TAB)));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
