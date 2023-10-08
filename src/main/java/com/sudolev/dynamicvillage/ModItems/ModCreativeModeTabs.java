@@ -1,6 +1,5 @@
-package com.sudolev.villagelife.ModItems;
+package com.sudolev.dynamicvillage.ModItems;
 
-import com.simibubi.create.AllItems;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;

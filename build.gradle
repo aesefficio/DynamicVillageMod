@@ -6,8 +6,8 @@ plugins {
 }
 
 version = '0.1'
-group = 'com.sudolev.villagelife' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'villagelife'
+group = 'com.sudolev.dynamicvillage' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'dynamicvillage'
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -26,13 +26,13 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
 
 
-            property 'forge.enabledGameTestNamespaces', 'villagelife'
+            property 'forge.enabledGameTestNamespaces', 'dynamicvillage'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.logging.console.level', 'debug'
 
             mods {
-                villagelife {
+                dynamicvillage {
                     source sourceSets.main
                 }
             }
@@ -45,7 +45,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            property 'forge.enabledGameTestNamespaces', 'villagelife'
+            property 'forge.enabledGameTestNamespaces', 'dynamicvillage'
 
             mods {
                 villagelife {
@@ -64,7 +64,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            property 'forge.enabledGameTestNamespaces', 'villagelife'
+            property 'forge.enabledGameTestNamespaces', 'dynamicvillage'
 
             mods {
                 villagelife {
@@ -81,7 +81,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
 
             // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-            args '--mod', 'villagelife', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'dynamicvillage', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
                 villagelife {
@@ -131,7 +131,7 @@ dependencies {
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "villagelife",
+                "Specification-Title"     : "dynamicvillage",
                 "Specification-Vendor"    : "sudolev",
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,

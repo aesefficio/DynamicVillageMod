@@ -1,10 +1,10 @@
-package com.sudolev.villagelife.event;
+package com.sudolev.dynamicvillage.event;
 
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
-import com.sudolev.villagelife.VillageLife;
-import com.sudolev.villagelife.villager.ModVillagers;
+import com.sudolev.dynamicvillage.VillageLife;
+import com.sudolev.dynamicvillage.villager.ModVillagers;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;

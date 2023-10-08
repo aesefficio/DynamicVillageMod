@@ -1,4 +1,4 @@
-package com.sudolev.villagelife;
+package com.sudolev.dynamicvillage;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;

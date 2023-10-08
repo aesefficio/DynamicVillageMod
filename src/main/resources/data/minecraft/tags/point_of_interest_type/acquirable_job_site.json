@@ -1,8 +1,8 @@
 {
   "values": [
-    "villagelife:create_engineer_poi",
-    "villagelife:create_hydraulic_engineer_poi",
-    "villagelife:create_miner_poi",
-    "villagelife:create_mechanic_poi"
+    "dynamicvillage:create_engineer_poi",
+    "dynamicvillage:create_hydraulic_engineer_poi",
+    "dynamicvillage:create_miner_poi",
+    "dynamicvillage:create_mechanic_poi"
   ]
 }
