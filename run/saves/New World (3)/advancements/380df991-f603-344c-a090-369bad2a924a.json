@@ -1,0 +1,21 @@
+{
+  "create:root": {
+    "criteria": {
+      "0": "2023-10-06 09:06:56 -0500"
+    },
+    "done": true
+  },
+  "minecraft:adventure/adventuring_time": {
+    "criteria": {
+      "minecraft:plains": "2023-10-06 09:06:26 -0500"
+    },
+    "done": false
+  },
+  "create:track_0": {
+    "criteria": {
+      "0": "2023-10-06 09:07:10 -0500"
+    },
+    "done": true
+  },
+  "DataVersion": 3120
+}

@@ -1,0 +1,6 @@
+JVM:         C:\Program Files\Java\jdk-17\bin\java.exe
+JVM Args:    
+Run Args:    "--inJar", "C:\GitRepos\VillageLifeMod\build\fg_cache\mcp\1.19.2-20220805.130853\joined\93939e21283a512aba0f923c10895d495dd18309\rename\output.jar", "--outJar", "C:\GitRepos\VillageLifeMod\build\fg_cache\mcp\1.19.2-20220805.130853\joined\93939e21283a512aba0f923c10895d495dd18309\AccessTransformer\output.jar", "--atFile", "C:\GitRepos\VillageLifeMod\src\main\resources\META-INF\accesstransformer.cfg", "--atFile", "C:\Users\alexs\AppData\Local\Temp\FG_ats_5393652811074009761.cfg"
+Classpath:   C:\Users\alexs\.gradle\caches\forge_gradle\maven_downloader\net\minecraftforge\accesstransformers\8.0.7\accesstransformers-8.0.7-fatjar.jar
+Working Dir: C:\GitRepos\VillageLifeMod\build\fg_cache\mcp\1.19.2-20220805.130853\joined\93939e21283a512aba0f923c10895d495dd18309\AccessTransformer
+Main Class:  net.minecraftforge.accesstransformer.TransformerProcessor

@@ -1,0 +1,6 @@
+JVM:         C:\Program Files\Java\jdk-17\bin\java.exe
+JVM Args:    
+Run Args:    "--client", "C:\GitRepos\VillageLifeMod\build\fg_cache\mcp\1.19.2-20220805.130853\joined\93939e21283a512aba0f923c10895d495dd18309\stripClient\output.jar", "--server", "C:\GitRepos\VillageLifeMod\build\fg_cache\mcp\1.19.2-20220805.130853\joined\93939e21283a512aba0f923c10895d495dd18309\stripServer\output.jar", "--ann", "1.19.2", "--output", "C:\GitRepos\VillageLifeMod\build\fg_cache\mcp\1.19.2-20220805.130853\joined\93939e21283a512aba0f923c10895d495dd18309\merge\output.jar", "--inject", "false"
+Classpath:   C:\Users\alexs\.gradle\caches\forge_gradle\maven_downloader\net\minecraftforge\mergetool\1.1.5\mergetool-1.1.5-fatjar.jar
+Working Dir: C:\GitRepos\VillageLifeMod\build\fg_cache\mcp\1.19.2-20220805.130853\joined\93939e21283a512aba0f923c10895d495dd18309\merge
+Main Class:  net.minecraftforge.mergetool.ConsoleMerger

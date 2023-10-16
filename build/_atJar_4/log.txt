@@ -1,0 +1,7 @@
+Java Launcher: C:\Program Files\Java\jdk-17\bin\java.exe
+Arguments: '--inJar, C:\GitRepos\VillageLifeMod\build\fg_cache\net\minecraftforge\forge\1.19.2-43.3.0\forge-1.19.2-43.3.0-injected.jar, --outJar, C:\GitRepos\VillageLifeMod\build\fg_cache\net\minecraftforge\forge\1.19.2-43.3.0_mapped_parchment_2022.08.14-1.19.2\forge-1.19.2-43.3.0_mapped_parchment_2022.08.14-1.19.2.jar, --logFile, accesstransform.log, --atFile, C:\GitRepos\VillageLifeMod\src\main\resources\META-INF\accesstransformer.cfg, --atFile, C:\GitRepos\VillageLifeMod\build\_atJar_4\parent_at.cfg'
+Classpath:
+ - C:\Users\alexs\.gradle\caches\forge_gradle\maven_downloader\net\minecraftforge\accesstransformers\8.0.7\accesstransformers-8.0.7-fatjar.jar
+Working directory: C:\GitRepos\VillageLifeMod\build\_atJar_4
+Main class: net.minecraftforge.accesstransformer.TransformerProcessor
+====================================

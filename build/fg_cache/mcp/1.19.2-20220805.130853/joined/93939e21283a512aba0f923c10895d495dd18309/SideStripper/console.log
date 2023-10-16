@@ -1,0 +1,9 @@
+JVM:         C:\Program Files\Java\jdk-17\bin\java.exe
+JVM Args:    
+Run Args:    "--strip", "--input", "C:\GitRepos\VillageLifeMod\build\fg_cache\mcp\1.19.2-20220805.130853\joined\93939e21283a512aba0f923c10895d495dd18309\AccessTransformer\output.jar", "--output", "C:\GitRepos\VillageLifeMod\build\fg_cache\mcp\1.19.2-20220805.130853\joined\93939e21283a512aba0f923c10895d495dd18309\SideStripper\output.jar", "--data", "C:\GitRepos\VillageLifeMod\build\fg_cache\mcp\1.19.2-20220805.130853\joined\93939e21283a512aba0f923c10895d495dd18309\SideStripper\string_data.sas"
+Classpath:   C:\Users\alexs\.gradle\caches\forge_gradle\maven_downloader\net\minecraftforge\mergetool\1.1.6\mergetool-1.1.6-fatjar.jar
+Working Dir: C:\GitRepos\VillageLifeMod\build\fg_cache\mcp\1.19.2-20220805.130853\joined\93939e21283a512aba0f923c10895d495dd18309\SideStripper
+Main Class:  net.minecraftforge.mergetool.ConsoleMerger
+Input:  C:\GitRepos\VillageLifeMod\build\fg_cache\mcp\1.19.2-20220805.130853\joined\93939e21283a512aba0f923c10895d495dd18309\AccessTransformer\output.jar
+Output: C:\GitRepos\VillageLifeMod\build\fg_cache\mcp\1.19.2-20220805.130853\joined\93939e21283a512aba0f923c10895d495dd18309\SideStripper\output.jar
+Data:   C:\GitRepos\VillageLifeMod\build\fg_cache\mcp\1.19.2-20220805.130853\joined\93939e21283a512aba0f923c10895d495dd18309\SideStripper\string_data.sas
