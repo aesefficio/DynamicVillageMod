@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d84a3e6-b420-4132-9d41-b9fdb600342d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/mods.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/mods.toml" afterDir="false" />
-    </list>
+    <list default="true" id="6d84a3e6-b420-4132-9d41-b9fdb600342d" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -205,7 +203,7 @@
       <workItem from="1697395705948" duration="555000" />
       <workItem from="1697466377891" duration="2466000" />
       <workItem from="1697495675544" duration="4250000" />
-      <workItem from="1697547737971" duration="442000" />
+      <workItem from="1697547737971" duration="1003000" />
     </task>
     <task id="LOCAL-00001" summary="1.19.2 Forge MDK, parchment mappings, dependencies.">
       <option name="closed" value="true" />
@@ -319,7 +317,15 @@
       <option name="project" value="LOCAL" />
       <updated>1697548150672</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Beta 0.2 Release">
+      <option name="closed" value="true" />
+      <created>1697548310365</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1697548310365</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -345,6 +351,7 @@
     <MESSAGE value="Attempt fix for broken village structures" />
     <MESSAGE value="Beta 0.1 Release" />
     <MESSAGE value="Simplified Chinese lang" />
-    <option name="LAST_COMMIT_MESSAGE" value="Simplified Chinese lang" />
+    <MESSAGE value="Beta 0.2 Release" />
+    <option name="LAST_COMMIT_MESSAGE" value="Beta 0.2 Release" />
   </component>
 </project>
