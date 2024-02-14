@@ -1,0 +1,7 @@
+{
+  "entity.minecraft.villager.dynamicvillage.mechanical_engineer": "Инженер-механик",
+  "entity.minecraft.villager.dynamicvillage.hydraulic_engineer": "Инженер-гидравлик",
+  "entity.minecraft.villager.dynamicvillage.train_mechanic": "Механик поезда",
+  "entity.minecraft.villager.dynamicvillage.miner": "Шахтёр",
+  "itemGroup.village_life_tab": "Create: Dynamic Village"
+}
