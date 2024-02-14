@@ -4,25 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6d84a3e6-b420-4132-9d41-b9fdb600342d" name="Changes" comment="Remove redundant files">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/icon.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/checksums/sha1-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+    <list default="true" id="6d84a3e6-b420-4132-9d41-b9fdb600342d" name="Changes" comment="Add">
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/checksums/checksums.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/checksums/md5-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/checksums/sha1-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/dependencies-accessors/dependencies-accessors.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5.1/dependencies-accessors/dependencies-accessors.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/executionHistory/executionHistory.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/executionHistory/executionHistory.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/fileHashes.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/fileHashes.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/7.5.1/fileHashes/resourceHashesCache.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/sudolev/dynamicvillage/event/HydraulicEngineerTrades.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/sudolev/dynamicvillage/event/HydraulicEngineerTrades.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/resources/main/META-INF/mods.toml" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/META-INF/mods.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/sudolev/dynamicvillage/event/HydraulicEngineerTrades.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/sudolev/dynamicvillage/event/HydraulicEngineerTrades.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/mods.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/mods.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -96,7 +94,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;1.19.2&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/GitRepos/VillageLifeMod/src/main/resources/assets/dynamicvillage/lang&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/GitRepos/VillageLifeMod/src/main/resources/assets/dynamicvillage/textures/entity/zombie_villager/profession&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -105,11 +103,13 @@
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\GitRepos\VillageLifeMod\src\main\resources\assets\dynamicvillage\textures\entity\zombie_villager\profession" />
       <recent name="C:\GitRepos\VillageLifeMod\src\main\resources\assets\dynamicvillage\lang" />
       <recent name="C:\GitRepos\VillageLifeMod\src\main\resources\data\dynamicvillage\structures" />
       <recent name="C:\GitRepos\VillageLifeMod\src\main\resources\data\dynamicvillage\structures\savanna" />
@@ -126,7 +126,7 @@
       <recent name="com.sudolev.villagelife.event" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.VillageLifeMod [build]">
+  <component name="RunManager" selected="Gradle.VillageLifeMod [runClient]">
     <configuration name="VillageLifeMod [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -195,8 +195,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.VillageLifeMod [build]" />
         <item itemvalue="Gradle.VillageLifeMod [runClient]" />
+        <item itemvalue="Gradle.VillageLifeMod [build]" />
         <item itemvalue="Gradle.VillageLifeMod [genIntellijRuns]" />
       </list>
     </recent_temporary>
@@ -225,7 +225,9 @@
       <workItem from="1697495675544" duration="4250000" />
       <workItem from="1697547737971" duration="1825000" />
       <workItem from="1697646187252" duration="18000" />
-      <workItem from="1698091211906" duration="452000" />
+      <workItem from="1698091211906" duration="1284000" />
+      <workItem from="1706905106115" duration="641000" />
+      <workItem from="1707926191555" duration="1088000" />
     </task>
     <task id="LOCAL-00001" summary="1.19.2 Forge MDK, parchment mappings, dependencies.">
       <option name="closed" value="true" />
@@ -355,7 +357,39 @@
       <option name="project" value="LOCAL" />
       <updated>1697548978615</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Fix broken trade, broken description + add logo file.">
+      <option name="closed" value="true" />
+      <created>1698091897232</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1698091897232</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Add zombie villager textures">
+      <option name="closed" value="true" />
+      <created>1706905598408</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1706905598408</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Add credits &amp; fix up metadata">
+      <option name="closed" value="true" />
+      <created>1707926460334</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1707926460334</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Fix mod name">
+      <option name="closed" value="true" />
+      <created>1707927356506</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1707927356506</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -382,7 +416,12 @@
     <MESSAGE value="Beta 0.1 Release" />
     <MESSAGE value="Simplified Chinese lang" />
     <MESSAGE value="Beta 0.2 Release" />
+    <MESSAGE value="Fix broken trade, broken description + add logo file." />
     <MESSAGE value="Remove redundant files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove redundant files" />
+    <MESSAGE value="Add zombie villager textures" />
+    <MESSAGE value="Add credits &amp; fix up metadata" />
+    <MESSAGE value="Add" />
+    <MESSAGE value="Fix mod name" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix mod name" />
   </component>
 </project>
