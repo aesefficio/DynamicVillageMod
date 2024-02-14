@@ -51,30 +51,26 @@ public class VillageAddition {
         Registry<StructureProcessorList> processorListRegistry = event.getServer().registryAccess().registry(Registry.PROCESSOR_LIST_REGISTRY).orElseThrow();
         addBuildingToPool(templatePoolRegistry, processorListRegistry,
                 new ResourceLocation("minecraft:village/plains/houses"),
-                "dynamicvillage:plains/plains_mechanical_engineer_house", 100);
+                "dynamicvillage:plains/plains_mechanical_engineer_house", 50);
 
         addBuildingToPool(templatePoolRegistry, processorListRegistry,
                 new ResourceLocation("minecraft:village/plains/houses"),
-                "dynamicvillage:mining_camp", 100);
+                "dynamicvillage:mining_camp", 50);
 
         addBuildingToPool(templatePoolRegistry, processorListRegistry,
                 new ResourceLocation("minecraft:village/snowy/houses"),
-                "dynamicvillage:mining_camp", 100);
+                "dynamicvillage:mining_camp", 50);
 
         addBuildingToPool(templatePoolRegistry, processorListRegistry,
                 new ResourceLocation("minecraft:village/savanna/houses"),
-                "dynamicvillage:mining_camp", 100);
+                "dynamicvillage:mining_camp", 50);
 
         addBuildingToPool(templatePoolRegistry, processorListRegistry,
                 new ResourceLocation("minecraft:village/taiga/houses"),
-                "dynamicvillage:mining_camp", 100);
+                "dynamicvillage:mining_camp", 50);
 
         addBuildingToPool(templatePoolRegistry, processorListRegistry,
                 new ResourceLocation("minecraft:village/desert/houses"),
-                "dynamicvillage:mining_camp", 100);
-
-        addBuildingToPool(templatePoolRegistry, processorListRegistry,
-                new ResourceLocation("minecraft:village/plains/houses"),
-                "dynamicvillage:train_station", 100);
+                "dynamicvillage:mining_camp", 50);
 
     }}

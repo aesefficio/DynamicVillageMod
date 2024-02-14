@@ -1,6 +1,5 @@
 package com.sudolev.dynamicvillage;
 
-import com.sudolev.dynamicvillage.ModItems.ModItems;
 import com.sudolev.dynamicvillage.villager.ModVillagers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -24,15 +23,12 @@ public class VillageLife
 
         modEventBus.addListener(this::commonSetup);
 
-        ModItems.register(modEventBus);
         ModVillagers.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);    }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
-            ModVillagers.registerPOIs();
-        });
+        event.enqueueWork(ModVillagers::registerPOIs);
     }
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent

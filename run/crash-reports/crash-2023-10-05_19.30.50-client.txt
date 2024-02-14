@@ -67,7 +67,7 @@ java.lang.RuntimeException: null
 		at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-10.0.9.jar%23114!/:?] {}
 		at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) [bootstraplauncher-1.1.2.jar:?] {}
 	Caused by: java.lang.ClassCastException: class net.minecraft.world.entity.EntityType cannot be cast to class java.util.function.Supplier (net.minecraft.world.entity.EntityType is in module minecraft@1.19.2 of loader 'TRANSFORMER' @44032fde; java.util.function.Supplier is in module java.base of loader 'bootstrap')
-		at com.sudolev.dynamicvillage.ModItems.ModItems.lambda$static$0(ModItems.java:23) ~[%23193!/:?] {re:classloading}
+		at com.sudolev.dynamicvillage.DVItems.ModItems.lambda$static$0(ModItems.java:23) ~[%23193!/:?] {re:classloading}
 		at net.minecraftforge.registries.DeferredRegister.lambda$addEntries$1(DeferredRegister.java:388) ~[forge-1.19.2-43.3.0_mapped_parchment_2022.08.14-1.19.2-recomp.jar%23187%23194!/:?] {re:classloading}
 		at net.minecraftforge.registries.RegisterEvent.register(RegisterEvent.java:59) ~[forge-1.19.2-43.3.0_mapped_parchment_2022.08.14-1.19.2-recomp.jar%23187%23194!/:?] {re:classloading,pl:eventbus:A}
 		at net.minecraftforge.registries.DeferredRegister.addEntries(DeferredRegister.java:388) ~[forge-1.19.2-43.3.0_mapped_parchment_2022.08.14-1.19.2-recomp.jar%23187%23194!/:?] {re:classloading}

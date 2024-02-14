@@ -10,7 +10,6 @@ public class ModTags {
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(new ResourceLocation(VillageLife.MODID, name));
         }
-
         private static TagKey<Block> forgeTag(String name) {
             return BlockTags.create(new ResourceLocation("forge", name));
         }
