@@ -49,11 +49,9 @@ public class VillageAddition {
     public static void addNewVillageBuilding(final ServerAboutToStartEvent event) {
         Registry<StructureTemplatePool> templatePoolRegistry = event.getServer().registryAccess().registry(Registry.TEMPLATE_POOL_REGISTRY).orElseThrow();
         Registry<StructureProcessorList> processorListRegistry = event.getServer().registryAccess().registry(Registry.PROCESSOR_LIST_REGISTRY).orElseThrow();
-        // Adds our piece to all village houses pool
-        // Note, the resourcelocation is getting the pool files from the data folder. Not assets folder.
         addBuildingToPool(templatePoolRegistry, processorListRegistry,
                 new ResourceLocation("minecraft:village/plains/houses"),
-                "dynamicvillage:plains/plains_mechanical_engineer_house", 250);
+                "dynamicvillage:plains/plains_mechanical_engineer_house", 100);
 
         addBuildingToPool(templatePoolRegistry, processorListRegistry,
                 new ResourceLocation("minecraft:village/plains/houses"),
