@@ -51,26 +51,66 @@ public class VillageAddition {
         Registry<StructureProcessorList> processorListRegistry = event.getServer().registryAccess().registry(Registry.PROCESSOR_LIST_REGISTRY).orElseThrow();
         addBuildingToPool(templatePoolRegistry, processorListRegistry,
                 new ResourceLocation("minecraft:village/plains/houses"),
-                "dynamicvillage:plains/plains_mechanical_engineer_house", 50);
-
+                "dynamicvillage:plains/plains_mech", 50);
         addBuildingToPool(templatePoolRegistry, processorListRegistry,
                 new ResourceLocation("minecraft:village/plains/houses"),
-                "dynamicvillage:mining_camp", 50);
-
+                "dynamicvillage:plains/plains_miner", 50);
         addBuildingToPool(templatePoolRegistry, processorListRegistry,
-                new ResourceLocation("minecraft:village/snowy/houses"),
-                "dynamicvillage:mining_camp", 50);
-
+                new ResourceLocation("minecraft:village/plains/houses"),
+                "dynamicvillage:plains/plains_train", 50);
         addBuildingToPool(templatePoolRegistry, processorListRegistry,
-                new ResourceLocation("minecraft:village/savanna/houses"),
-                "dynamicvillage:mining_camp", 50);
-
-        addBuildingToPool(templatePoolRegistry, processorListRegistry,
-                new ResourceLocation("minecraft:village/taiga/houses"),
-                "dynamicvillage:mining_camp", 50);
+                new ResourceLocation("minecraft:village/plains/houses"),
+                "dynamicvillage:plains/plains_plumber", 50);
 
         addBuildingToPool(templatePoolRegistry, processorListRegistry,
                 new ResourceLocation("minecraft:village/desert/houses"),
-                "dynamicvillage:mining_camp", 50);
+                "dynamicvillage:desert/desert_mech", 50);
+        addBuildingToPool(templatePoolRegistry, processorListRegistry,
+                new ResourceLocation("minecraft:village/desert/houses"),
+                "dynamicvillage:desert/desert_miner", 50);
+        addBuildingToPool(templatePoolRegistry, processorListRegistry,
+                new ResourceLocation("minecraft:village/desert/houses"),
+                "dynamicvillage:desert/desert_train", 50);
+        addBuildingToPool(templatePoolRegistry, processorListRegistry,
+                new ResourceLocation("minecraft:village/desert/houses"),
+                "dynamicvillage:desert/desert_plumber", 50);
 
+        addBuildingToPool(templatePoolRegistry, processorListRegistry,
+                new ResourceLocation("minecraft:village/taiga/houses"),
+                "dynamicvillage:taiga/taiga_mech", 50);
+        addBuildingToPool(templatePoolRegistry, processorListRegistry,
+                new ResourceLocation("minecraft:village/taiga/houses"),
+                "dynamicvillage:taiga/taiga_miner", 50);
+        addBuildingToPool(templatePoolRegistry, processorListRegistry,
+                new ResourceLocation("minecraft:village/taiga/houses"),
+                "dynamicvillage:taiga/taiga_train", 50);
+        addBuildingToPool(templatePoolRegistry, processorListRegistry,
+                new ResourceLocation("minecraft:village/taiga/houses"),
+                "dynamicvillage:taiga/taiga_plumber", 50);
+
+        addBuildingToPool(templatePoolRegistry, processorListRegistry,
+                new ResourceLocation("minecraft:village/snowy/houses"),
+                "dynamicvillage:snowy/snowy_mech", 50);
+        addBuildingToPool(templatePoolRegistry, processorListRegistry,
+                new ResourceLocation("minecraft:village/snowy/houses"),
+                "dynamicvillage:snowy/snowy_miner", 50);
+        addBuildingToPool(templatePoolRegistry, processorListRegistry,
+                new ResourceLocation("minecraft:village/snowy/houses"),
+                "dynamicvillage:snowy/snowy_train", 50);
+        addBuildingToPool(templatePoolRegistry, processorListRegistry,
+                new ResourceLocation("minecraft:village/snowy/houses"),
+                "dynamicvillage:snowy/snowy_plumber", 50);
+
+        addBuildingToPool(templatePoolRegistry, processorListRegistry,
+                new ResourceLocation("minecraft:village/savanna/houses"),
+                "dynamicvillage:savanna/savanna_mech", 50);
+        addBuildingToPool(templatePoolRegistry, processorListRegistry,
+                new ResourceLocation("minecraft:village/savanna/houses"),
+                "dynamicvillage:savanna/savanna_miner", 50);
+        addBuildingToPool(templatePoolRegistry, processorListRegistry,
+                new ResourceLocation("minecraft:village/savanna/houses"),
+                "dynamicvillage:savanna/savanna_train", 50);
+        addBuildingToPool(templatePoolRegistry, processorListRegistry,
+                new ResourceLocation("minecraft:village/savanna/houses"),
+                "dynamicvillage:savanna/savanna_plumber", 50);
     }}
