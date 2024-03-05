@@ -24,7 +24,7 @@ public class ModVillagers {
             () -> new PoiType(ImmutableSet.copyOf(AllBlocks.SCHEMATIC_TABLE.get().getStateDefinition().getPossibleStates()),
                     1, 3));
     public static final RegistryObject<PoiType> CREATE_HYDRAULIC_ENGINEER_POI = POI_TYPES.register("create_hydraulic_engineer_poi",
-            () -> new PoiType(ImmutableSet.copyOf(AllBlocks.SPOUT.get().getStateDefinition().getPossibleStates()),
+            () -> new PoiType(ImmutableSet.copyOf(AllBlocks.ITEM_DRAIN.get().getStateDefinition().getPossibleStates()),
                     1, 2));
     public static final RegistryObject<PoiType> CREATE_MINER_POI = POI_TYPES.register("create_miner_poi",
             () -> new PoiType(ImmutableSet.copyOf(AllBlocks.MECHANICAL_DRILL.get().getStateDefinition().getPossibleStates()),
