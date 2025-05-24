@@ -1,0 +1,7 @@
+{
+  "entity.minecraft.villager.dynamicvillage.mechanical_engineer": "Ingeniero Mecánico",
+  "entity.minecraft.villager.dynamicvillage.hydraulic_engineer": "Ingeniero Hidraulico",
+  "entity.minecraft.villager.dynamicvillage.train_mechanic": "Mecánico de trenes",
+  "entity.minecraft.villager.dynamicvillage.miner": "Minero",
+  "itemGroup.village_life_tab": "Create: Aldeanos Dinámicos"
+}
