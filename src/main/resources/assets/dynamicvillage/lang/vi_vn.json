@@ -1,0 +1,7 @@
+{
+"entity.minecraft.villager.dynamicvillage.mechanical_engineer": "Kỹ sư cơ khí",
+"entity.minecraft.villager.dynamicvillage.hydraulic_engineer": "Kỹ sư thủy lực",
+"entity.minecraft.villager.dynamicvillage.train_mechanic": "Kỹ sư tàu hỏa",
+"entity.minecraft.villager.dynamicvillage.miner": "Người khai thác quặng",
+"itemGroup.village_life_tab": "Create: Dynamic Villages"
+}

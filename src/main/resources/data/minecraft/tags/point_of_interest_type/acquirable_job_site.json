@@ -1,0 +1,8 @@
+{
+  "values": [
+    "dynamicvillage:create_engineer_poi",
+    "dynamicvillage:create_hydraulic_engineer_poi",
+    "dynamicvillage:create_miner_poi",
+    "dynamicvillage:create_mechanic_poi"
+  ]
+}

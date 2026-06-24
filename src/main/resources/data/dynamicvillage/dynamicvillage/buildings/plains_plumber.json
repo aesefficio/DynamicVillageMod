@@ -1,0 +1,5 @@
+{
+  "pool": "minecraft:village/plains/houses",
+  "structure": "dynamicvillage:plains/plains_plumber",
+  "weight": 1
+}

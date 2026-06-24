@@ -1,0 +1,5 @@
+{
+  "pool": "minecraft:village/savanna/houses",
+  "structure": "dynamicvillage:savanna/savanna_plumber",
+  "weight": 1
+}

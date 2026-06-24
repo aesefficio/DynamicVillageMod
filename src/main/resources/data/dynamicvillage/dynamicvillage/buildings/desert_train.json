@@ -1,0 +1,5 @@
+{
+  "pool": "minecraft:village/desert/houses",
+  "structure": "dynamicvillage:desert/desert_train",
+  "weight": 1
+}

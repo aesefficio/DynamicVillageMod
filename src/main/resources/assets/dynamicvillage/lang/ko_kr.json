@@ -1,0 +1,7 @@
+{
+  "entity.minecraft.villager.dynamicvillage.mechanical_engineer": "기계 엔지니어",
+  "entity.minecraft.villager.dynamicvillage.hydraulic_engineer": "수력 엔지니어",
+  "entity.minecraft.villager.dynamicvillage.train_mechanic": "기차 정비사",
+  "entity.minecraft.villager.dynamicvillage.miner": "광부",
+  "itemGroup.village_life_tab": "Create: Dynamic Village"
+}
