@@ -1,0 +1,5 @@
+{
+  "pool": "minecraft:village/snowy/houses",
+  "structure": "dynamicvillage:snowy/snowy_miner",
+  "weight": 1
+}

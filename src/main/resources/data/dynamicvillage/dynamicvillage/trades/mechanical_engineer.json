@@ -1,0 +1,29 @@
+{
+  "profession": "dynamicvillage:mechanical_engineer",
+  "trades": [
+    { "level": 1, "cost": { "item": "minecraft:emerald", "count": 2 }, "result": { "item": "create:andesite_alloy", "count": 8 }, "max_uses": 8, "xp": 8, "price_multiplier": 0.02 },
+    { "level": 1, "cost": { "item": "minecraft:cobblestone", "count": 20 }, "result": { "item": "minecraft:emerald", "count": 1 }, "max_uses": 8, "xp": 8, "price_multiplier": 0.01 },
+    { "level": 1, "cost": { "item": "minecraft:emerald", "count": 1 }, "result": { "item": "create:iron_sheet", "count": 4 }, "max_uses": 10, "xp": 8, "price_multiplier": 0.02 },
+    { "level": 1, "cost": { "item": "create:raw_zinc", "count": 6 }, "result": { "item": "minecraft:emerald", "count": 1 }, "max_uses": 10, "xp": 8, "price_multiplier": 0.02 },
+    { "level": 1, "cost": { "item": "minecraft:emerald", "count": 5 }, "result": { "item": "create:wrench", "count": 1 }, "max_uses": 3, "xp": 24, "price_multiplier": 0.04 },
+
+    { "level": 2, "cost": { "item": "minecraft:emerald", "count": 3 }, "result": { "item": "create:mechanical_bearing", "count": 1 }, "max_uses": 8, "xp": 8, "price_multiplier": 0.02 },
+    { "level": 2, "cost": { "item": "minecraft:emerald", "count": 6 }, "result": { "item": "create:goggles", "count": 1 }, "max_uses": 3, "xp": 32, "price_multiplier": 0.1 },
+    { "level": 2, "cost": { "item": "create:cogwheel", "count": 14 }, "result": { "item": "minecraft:emerald", "count": 1 }, "max_uses": 10, "xp": 8, "price_multiplier": 0.02 },
+    { "level": 2, "cost": { "item": "minecraft:emerald", "count": 3 }, "result": { "item": "create:water_wheel", "count": 4 }, "max_uses": 10, "xp": 12, "price_multiplier": 0.1 },
+    { "level": 2, "cost": { "item": "minecraft:emerald", "count": 2 }, "result": { "item": "create:basin", "count": 1 }, "max_uses": 10, "xp": 12, "price_multiplier": 0.1 },
+    { "level": 2, "cost": { "item": "minecraft:emerald", "count": 2 }, "result": { "item": "create:depot", "count": 1 }, "max_uses": 10, "xp": 10, "price_multiplier": 0.1 },
+
+    { "level": 3, "cost": { "item": "create:belt_connector", "count": 10 }, "result": { "item": "minecraft:emerald", "count": 3 }, "max_uses": 10, "xp": 10, "price_multiplier": 0.01 },
+    { "level": 3, "cost": { "item": "minecraft:emerald", "count": 6 }, "result": { "item": "create:stressometer", "count": 1 }, "max_uses": 3, "xp": 16, "price_multiplier": 0.01 },
+
+    { "level": 4, "cost": { "item": "minecraft:emerald", "count": 8 }, "result": { "item": "create:speedometer", "count": 1 }, "max_uses": 4, "xp": 38, "price_multiplier": 0.01 },
+    { "level": 4, "cost": { "item": "create:large_water_wheel", "count": 4 }, "result": { "item": "minecraft:emerald", "count": 1 }, "max_uses": 6, "xp": 10, "price_multiplier": 0.01 },
+    { "level": 4, "cost": { "item": "create:chute", "count": 3 }, "result": { "item": "minecraft:emerald", "count": 1 }, "max_uses": 10, "xp": 10, "price_multiplier": 0.01 },
+
+    { "level": 5, "cost": { "item": "minecraft:emerald", "count": 5 }, "result": { "item": "create:crushing_wheel", "count": 1 }, "max_uses": 8, "xp": 28, "price_multiplier": 0.01 },
+    { "level": 5, "cost": { "item": "minecraft:emerald", "count": 9 }, "result": { "item": "create:mechanical_roller", "count": 2 }, "max_uses": 2, "xp": 24, "price_multiplier": 0.01 },
+    { "level": 5, "cost": { "item": "minecraft:emerald", "count": 10 }, "result": { "item": "create:mechanical_arm", "count": 1 }, "max_uses": 3, "xp": 40, "price_multiplier": 0.01 },
+    { "level": 5, "cost": { "item": "minecraft:emerald", "count": 3 }, "result": { "item": "create:mechanical_crafter", "count": 2 }, "max_uses": 8, "xp": 12, "price_multiplier": 0.01 }
+  ]
+}

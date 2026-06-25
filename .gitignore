@@ -1,26 +1,28 @@
-# eclipse
-bin
-*.launch
-.settings
-.metadata
-.classpath
-.project
+# Gradle
+.gradle/
+build/
+out/
 
-# idea
-out
+# Forge / run directories
+run/
+runs/
+run-data/
+logs/
+
+# Vendored dependency jars
+libs/
+
+# IDE
+.idea/
+*.iml
 *.ipr
 *.iws
-*.iml
-.idea
+.classpath
+.project
+.settings/
+bin/
+.vscode/
 
-# gradle
-build
-.gradle
-
-# other
-eclipse
-run
-
-# Files from Forge MDK
-forge*changelog.txt
-/run/
+# OS
+.DS_Store
+Thumbs.db
