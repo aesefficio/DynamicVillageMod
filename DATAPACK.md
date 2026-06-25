@@ -39,10 +39,10 @@ each other, so any number of packs/mods can contribute buildings at once.
 Put your structure where the game looks for templates:
 
 ```
-data/<your_namespace>/structure/<path>.nbt
+data/<your_namespace>/structures/<path>.nbt
 ```
 
-(Reference it from `structure` above — e.g. `data/mypack/structure/houses/cool_house.nbt`
+(Reference it from `structure` above — e.g. `data/mypack/structures/houses/cool_house.nbt`
 is `"structure": "mypack:houses/cool_house"`.) The structure must contain a **jigsaw block**
 at its entrance so it connects to the village road — see the main README for how to build one.
 
@@ -139,7 +139,7 @@ Inside `EmeraldDeal`, create a file named `pack.mcmeta` with this content:
 ```json
 {
   "pack": {
-    "pack_format": 48,
+    "pack_format": 15,
     "description": "Stick = stack of emerald blocks"
   }
 }

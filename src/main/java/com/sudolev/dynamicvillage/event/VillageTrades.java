@@ -64,22 +64,32 @@ public class VillageTrades {
             continue;
          }
 
-         ItemStack baseCost = new ItemStack(costItem, entry.cost().count());
-         ItemStack result = new ItemStack(resultItem, entry.result().count());
-
-         ItemStack secondCost = ItemStack.EMPTY;
+         Item cost2Item = null;
          if (entry.cost2().isPresent()) {
-            Item cost2Item = resolve(entry.cost2().get().item(), professionId);
+            cost2Item = resolve(entry.cost2().get().item(), professionId);
             if (cost2Item == null) {
                continue;
             }
-            secondCost = new ItemStack(cost2Item, entry.cost2().get().count());
          }
 
-         ItemStack finalSecondCost = secondCost;
-         levelTrades.add(
-            (trader, rand) -> new MerchantOffer(baseCost, finalSecondCost, result, entry.maxUses(), entry.xp(), entry.priceMultiplier())
-         );
+         // Capture resolved items + counts; build fresh ItemStacks per offer so no mutable stack
+         // is shared across villagers.
+         Item fCost = costItem;
+         int costCount = entry.cost().count();
+         Item fResult = resultItem;
+         int resultCount = entry.result().count();
+         Item fCost2 = cost2Item;
+         int cost2Count = entry.cost2().map(VillageTradeEntry.TradeItem::count).orElse(0);
+         int maxUses = entry.maxUses();
+         int xp = entry.xp();
+         float priceMultiplier = entry.priceMultiplier();
+
+         levelTrades.add((trader, rand) -> {
+            ItemStack baseCost = new ItemStack(fCost, costCount);
+            ItemStack result = new ItemStack(fResult, resultCount);
+            ItemStack secondCost = fCost2 == null ? ItemStack.EMPTY : new ItemStack(fCost2, cost2Count);
+            return new MerchantOffer(baseCost, secondCost, result, maxUses, xp, priceMultiplier);
+         });
          added++;
       }
 

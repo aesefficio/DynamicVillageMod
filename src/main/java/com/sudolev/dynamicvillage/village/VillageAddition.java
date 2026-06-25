@@ -79,6 +79,13 @@ public class VillageAddition {
          return;
       }
 
+      // Entries with weight <= 0 are intentionally excluded (lets a data pack disable a building).
+      List<VillageBuildingEntry> weighted = entries.stream().filter(e -> e.weight() > 0).toList();
+      if (weighted.isEmpty()) {
+         LOGGER.info("[DynamicVillage] Pool {}: no custom building(s) with weight > 0, skipping", poolRL);
+         return;
+      }
+
       // The config controls the TOTAL custom share vs vanilla; each entry's weight controls its
       // share of that custom budget (so data packs tune relative frequency per building).
       int vanillaWeight = rawTemplates.stream().mapToInt(Pair::getSecond).sum();
@@ -91,10 +98,10 @@ public class VillageAddition {
          customTotalWeight = Math.max(1, vanillaWeight * spawnChancePercent / (100 - spawnChancePercent));
       }
 
-      int totalRelative = entries.stream().mapToInt(e -> Math.max(1, e.weight())).sum();
+      int totalRelative = weighted.stream().mapToInt(VillageBuildingEntry::weight).sum();
       int added = 0;
 
-      for (VillageBuildingEntry entry : entries) {
+      for (VillageBuildingEntry entry : weighted) {
          ResourceKey<StructureProcessorList> procKey = ResourceKey.create(Registries.PROCESSOR_LIST, entry.processors());
          Optional<Holder.Reference<StructureProcessorList>> procHolder = processorListRegistry.getHolder(procKey);
          if (procHolder.isEmpty()) {
@@ -102,8 +109,8 @@ public class VillageAddition {
             continue;
          }
 
-         int relative = Math.max(1, entry.weight());
-         int entryWeight = Math.max(1, (int) ((long) customTotalWeight * relative / totalRelative));
+         // Proportional split of the custom budget by relative weight (rounded), min 1 so each building can appear.
+         int entryWeight = (int) Math.max(1L, Math.round((double) customTotalWeight * entry.weight() / totalRelative));
 
          SinglePoolElement piece = (SinglePoolElement) SinglePoolElement
             .single(entry.structure().toString(), procHolder.get())

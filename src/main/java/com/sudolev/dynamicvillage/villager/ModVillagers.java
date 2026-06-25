@@ -7,14 +7,10 @@ import com.simibubi.create.content.kinetics.drill.DrillBlock;
 import com.simibubi.create.content.schematics.table.SchematicTableBlock;
 import com.simibubi.create.content.trains.station.StationBlock;
 import com.sudolev.dynamicvillage.VillageLife;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper.UnableToFindMethodException;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -86,18 +82,6 @@ public class ModVillagers {
             SoundEvents.VILLAGER_WORK_MASON
          )
    );
-
-   public static void registerPOIs() {
-      try {
-         Method registerBlockStatesMethod = ObfuscationReflectionHelper.findMethod(PoiType.class, "registerBlockStates", PoiType.class);
-         registerBlockStatesMethod.invoke(null, CREATE_ENGINEER_POI.get());
-         registerBlockStatesMethod.invoke(null, CREATE_HYDRAULIC_ENGINEER_POI.get());
-         registerBlockStatesMethod.invoke(null, CREATE_MECHANIC_POI.get());
-         registerBlockStatesMethod.invoke(null, CREATE_MINER_POI.get());
-      } catch (IllegalAccessException | UnableToFindMethodException | InvocationTargetException e) {
-         e.printStackTrace();
-      }
-   }
 
    public static void register(IEventBus eventBus) {
       POI_TYPES.register(eventBus);

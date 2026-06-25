@@ -33,7 +33,6 @@ public class VillageLife {
    }
 
    private void commonSetup(FMLCommonSetupEvent event) {
-      event.enqueueWork(ModVillagers::registerPOIs);
    }
 
    @SubscribeEvent
