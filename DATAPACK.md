@@ -30,7 +30,7 @@ each other, so any number of packs/mods can contribute buildings at once.
 |--------------|----------|--------------------|-------------|
 | `pool`       | yes      | —                  | The village pool to add to, e.g. `minecraft:village/plains/houses`, `.../desert/houses`, `.../taiga/houses`, `.../snowy/houses`, `.../savanna/houses`. Any template pool works. |
 | `structure`  | yes      | —                  | The NBT structure to place (any namespace). |
-| `weight`     | no       | `1`                | Relative frequency vs the **other custom buildings** in the same pool. A `weight` of `3` shows up ~3x as often as a `weight` of `1`. |
+| `weight`     | no       | `1`                | Relative frequency vs the **other custom buildings** in the same pool. A `weight` of `3` shows up ~3x as often as a `weight` of `1`. Set it to `0` to disable a building (e.g. to remove one of the mod's defaults). |
 | `projection` | no       | `rigid`            | `rigid` or `terrain_matching`. Village houses are almost always `rigid`. |
 | `processors` | no       | `minecraft:empty`  | A processor list resource location, if you need block processing. |
 
