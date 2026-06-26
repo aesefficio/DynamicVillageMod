@@ -14,6 +14,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.structure.pools.EmptyPoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
@@ -35,6 +36,15 @@ import org.slf4j.Logger;
 public class VillageAddition {
    private static final Logger LOGGER = LogUtils.getLogger();
 
+   /** Vanilla per-biome village decoration pools whose density the config can boost. */
+   private static final List<ResourceLocation> DECOR_POOLS = List.of(
+      ResourceLocation.parse("minecraft:village/plains/decor"),
+      ResourceLocation.parse("minecraft:village/desert/decor"),
+      ResourceLocation.parse("minecraft:village/savanna/decor"),
+      ResourceLocation.parse("minecraft:village/snowy/decor"),
+      ResourceLocation.parse("minecraft:village/taiga/decor")
+   );
+
    /** Register the data pack reload listener that loads building definitions. */
    @SubscribeEvent
    public static void onAddReloadListeners(AddReloadListenerEvent event) {
@@ -55,6 +65,42 @@ public class VillageAddition {
 
       int spawnChancePercent = VillageConfig.BUILDING_SPAWN_CHANCE.get();
       byPool.forEach((poolRL, entries) -> injectPool(templatePoolRegistry, processorListRegistry, poolRL, entries, spawnChancePercent));
+
+      int decorMultiplier = VillageConfig.DECORATION_DENSITY.get();
+      if (decorMultiplier > 1) {
+         for (ResourceLocation decorPool : DECOR_POOLS) {
+            boostDecorPool(templatePoolRegistry, decorPool, decorMultiplier);
+         }
+      }
+   }
+
+   /**
+    * Increases vanilla decoration density by scaling the weight of every non-empty element in a decor
+    * pool, leaving the weighted "empty" element as-is. This shifts each decoration spot away from
+    * resolving to nothing, so more lamps/flowers/props appear.
+    */
+   private static void boostDecorPool(Registry<StructureTemplatePool> templatePoolRegistry, ResourceLocation poolRL, int multiplier) {
+      StructureTemplatePool pool = templatePoolRegistry.get(poolRL);
+      if (pool == null) {
+         return;
+      }
+
+      int sizeBefore = pool.templates.size();
+      List<Pair<StructurePoolElement, Integer>> newRaw = new ArrayList<>();
+      List<StructurePoolElement> newTemplates = new ArrayList<>();
+      for (Pair<StructurePoolElement, Integer> pair : pool.rawTemplates) {
+         StructurePoolElement element = pair.getFirst();
+         int weight = (element instanceof EmptyPoolElement) ? pair.getSecond() : pair.getSecond() * multiplier;
+         newRaw.add(new Pair<>(element, weight));
+         for (int i = 0; i < weight; i++) {
+            newTemplates.add(element);
+         }
+      }
+
+      pool.templates.clear();
+      pool.templates.addAll(newTemplates);
+      pool.rawTemplates = newRaw;
+      LOGGER.info("[DynamicVillage] Decor pool {}: density x{} ({} -> {} weighted entries)", poolRL, multiplier, sizeBefore, pool.templates.size());
    }
 
    private static void injectPool(
