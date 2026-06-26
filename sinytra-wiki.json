@@ -1,0 +1,13 @@
+{
+  "schema": "1",
+  "id": "dynamic_village",
+  "platforms": {
+    "curseforge": "dynamic-village",
+    "modrinth": "dynamic-village"
+  },
+  "modid": "dynamic_village",
+  "owners": [
+    "a0ax",
+    "aes efficio"
+  ]
+}
