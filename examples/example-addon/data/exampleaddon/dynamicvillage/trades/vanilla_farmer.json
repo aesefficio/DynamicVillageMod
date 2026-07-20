@@ -1,0 +1,13 @@
+{
+  "$schema": "../../../../../../schemas/dynamicvillage-trades.schema.json",
+  "profession": "minecraft:farmer",
+  "trades": [
+    {
+      "level": 1,
+      "cost": { "item": "minecraft:emerald", "count": 3 },
+      "result": { "item": "minecraft:cake", "count": 1 },
+      "max_uses": 6,
+      "xp": 5
+    }
+  ]
+}

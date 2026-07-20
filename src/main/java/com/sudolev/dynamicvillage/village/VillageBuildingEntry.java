@@ -2,6 +2,8 @@ package com.sudolev.dynamicvillage.village;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.sudolev.dynamicvillage.condition.LoadCondition;
+import java.util.List;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool.Projection;
@@ -25,13 +27,15 @@ import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool.
  * @param weight     relative weight among the custom buildings in this pool (defaults to 1)
  * @param projection {@code rigid} or {@code terrain_matching} (defaults to {@code rigid})
  * @param processors the processor list to apply (defaults to {@code minecraft:empty})
+ * @param conditions optional load conditions; the building is skipped if any is unmet (see {@link LoadCondition})
  */
 public record VillageBuildingEntry(
    ResourceLocation pool,
    ResourceLocation structure,
    int weight,
    Projection projection,
-   ResourceLocation processors
+   ResourceLocation processors,
+   List<LoadCondition> conditions
 ) {
    private static final Codec<Projection> PROJECTION_CODEC = StringRepresentable.fromEnum(Projection::values);
 
@@ -43,7 +47,8 @@ public record VillageBuildingEntry(
             PROJECTION_CODEC.optionalFieldOf("projection", Projection.RIGID).forGetter(VillageBuildingEntry::projection),
             ResourceLocation.CODEC
                .optionalFieldOf("processors", new ResourceLocation("empty"))
-               .forGetter(VillageBuildingEntry::processors)
+               .forGetter(VillageBuildingEntry::processors),
+            LoadCondition.CODEC.listOf().optionalFieldOf("conditions", List.of()).forGetter(VillageBuildingEntry::conditions)
          )
          .apply(instance, VillageBuildingEntry::new)
    );

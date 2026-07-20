@@ -23,6 +23,7 @@ public class VillageLife {
       IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
       modEventBus.addListener(this::commonSetup);
       ModVillagers.register(modEventBus);
+      com.sudolev.dynamicvillage.profession.ProfessionRegistrar.register(modEventBus);
       MinecraftForge.EVENT_BUS.register(this);
       ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, VillageConfig.SPEC);
 

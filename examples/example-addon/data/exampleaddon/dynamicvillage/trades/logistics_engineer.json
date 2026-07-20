@@ -1,0 +1,23 @@
+{
+  "$schema": "../../../../../../schemas/dynamicvillage-trades.schema.json",
+  "profession": "exampleaddon:logistics_engineer",
+  "conditions": [
+    { "type": "mod_loaded", "mod": "create" }
+  ],
+  "trades": [
+    {
+      "level": 1,
+      "cost": { "item": "minecraft:emerald", "count": 1 },
+      "result": { "item": "create:cardboard", "count": { "min": 4, "max": 8 } },
+      "max_uses": 12,
+      "xp": 4
+    },
+    {
+      "level": 2,
+      "cost": { "item": "minecraft:emerald", "count": 5 },
+      "result": { "item": "create:packager", "count": 1 },
+      "max_uses": 4,
+      "xp": 10
+    }
+  ]
+}

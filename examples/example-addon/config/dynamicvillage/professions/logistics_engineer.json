@@ -1,0 +1,9 @@
+{
+  "$schema": "../../../../../schemas/dynamicvillage-profession.schema.json",
+  "id": "exampleaddon:logistics_engineer",
+  "job_site_block": "create:packager",
+  "work_sound": "minecraft:entity.villager.work_toolsmith",
+  "conditions": [
+    { "type": "block_exists", "id": "create:packager" }
+  ]
+}

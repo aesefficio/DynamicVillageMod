@@ -1,0 +1,9 @@
+{
+  "$schema": "../../../../../../schemas/dynamicvillage-building.schema.json",
+  "pool": "minecraft:village/plains/houses",
+  "structure": "dynamicvillage:plains/plains_mech",
+  "weight": 2,
+  "conditions": [
+    { "type": "mod_loaded", "mod": "create" }
+  ]
+}

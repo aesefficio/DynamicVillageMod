@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/sudolev/DynamicVillageMod/schemas/dynamicvillage-building.schema.json",
+  "title": "Create: Dynamic Village — village building file",
+  "description": "One custom building injected into a village pool. Place at data/<namespace>/dynamicvillage/buildings/<name>.json.",
+  "type": "object",
+  "required": ["pool", "structure"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "pool": {
+      "type": "string",
+      "description": "Target template pool, e.g. minecraft:village/plains/houses. Any pool works.",
+      "pattern": "^[a-z0-9_.-]+:[a-z0-9_./-]+$"
+    },
+    "structure": {
+      "type": "string",
+      "description": "NBT structure id (loaded from data/<ns>/structure/<path>.nbt). Needs a jigsaw block at its entrance.",
+      "pattern": "^[a-z0-9_.-]+:[a-z0-9_./-]+$"
+    },
+    "weight": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 1,
+      "description": "Share relative to other custom buildings in the same pool. 0 disables (removes a default)."
+    },
+    "projection": {
+      "enum": ["rigid", "terrain_matching"],
+      "default": "rigid"
+    },
+    "processors": {
+      "type": "string",
+      "default": "minecraft:empty",
+      "description": "Processor list id to apply to the structure."
+    },
+    "conditions": {
+      "type": "array",
+      "description": "Optional load conditions; ALL must be met or this building is skipped.",
+      "items": {
+        "type": "object",
+        "required": ["type"],
+        "additionalProperties": false,
+        "properties": {
+          "type": { "enum": ["mod_loaded", "item_exists", "block_exists"] },
+          "mod": { "type": "string" },
+          "id": { "type": "string" },
+          "negate": { "type": "boolean", "default": false }
+        }
+      }
+    }
+  }
+}

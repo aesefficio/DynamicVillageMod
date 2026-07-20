@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/sudolev/DynamicVillageMod/schemas/dynamicvillage-trades.schema.json",
+  "title": "Create: Dynamic Village — villager trades file",
+  "description": "One profession's data-driven villager trades. Place at data/<namespace>/dynamicvillage/trades/<name>.json.",
+  "type": "object",
+  "required": ["profession", "trades"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "profession": {
+      "type": "string",
+      "description": "Target profession id, e.g. dynamicvillage:miner or minecraft:farmer.",
+      "pattern": "^[a-z0-9_.-]+:[a-z0-9_./-]+$"
+    },
+    "replace": {
+      "type": "boolean",
+      "default": false,
+      "description": "false = append these trades to the profession's pool (composes with other packs). true = clear everything accumulated for this profession first, then add these."
+    },
+    "conditions": { "$ref": "#/$defs/conditions" },
+    "trades": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/trade" }
+    }
+  },
+  "$defs": {
+    "trade": {
+      "type": "object",
+      "required": ["level", "cost", "result"],
+      "additionalProperties": false,
+      "properties": {
+        "level": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "Villager tier (1-5) that unlocks this trade."
+        },
+        "cost": { "$ref": "#/$defs/itemSpec" },
+        "cost2": { "$ref": "#/$defs/itemSpec" },
+        "result": { "$ref": "#/$defs/itemSpec" },
+        "max_uses": { "type": "integer", "minimum": 1, "default": 12 },
+        "xp": { "type": "integer", "minimum": 0, "default": 2 },
+        "price_multiplier": { "type": "number", "default": 0.05 }
+      }
+    },
+    "itemSpec": {
+      "type": "object",
+      "description": "An item reference plus count. Set exactly one of 'item' or 'tag'.",
+      "additionalProperties": false,
+      "properties": {
+        "item": { "type": "string", "description": "Exact item id, e.g. minecraft:emerald." },
+        "tag": { "type": "string", "description": "Item tag id, e.g. c:ingots/zinc; resolves to the first registered item in the tag." },
+        "count": { "$ref": "#/$defs/count" },
+        "components": { "type": "object", "description": "Result only. Data components (1.21.x) or item NBT (1.20.x) to attach — enchantments, custom name, potion, etc. Contents are version-specific." }
+      },
+      "oneOf": [
+        { "required": ["item"] },
+        { "required": ["tag"] }
+      ]
+    },
+    "count": {
+      "description": "A fixed count, or a random {min,max} range rolled per offer.",
+      "oneOf": [
+        { "type": "integer", "minimum": 1 },
+        {
+          "type": "object",
+          "required": ["min", "max"],
+          "additionalProperties": false,
+          "properties": {
+            "min": { "type": "integer", "minimum": 1 },
+            "max": { "type": "integer", "minimum": 1 }
+          }
+        }
+      ]
+    },
+    "conditions": {
+      "type": "array",
+      "description": "Optional load conditions; ALL must be met or the whole file is skipped.",
+      "items": { "$ref": "#/$defs/condition" }
+    },
+    "condition": {
+      "type": "object",
+      "required": ["type"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": ["mod_loaded", "item_exists", "block_exists"],
+          "description": "mod_loaded needs 'mod'; item_exists/block_exists need 'id'."
+        },
+        "mod": { "type": "string" },
+        "id": { "type": "string" },
+        "negate": { "type": "boolean", "default": false }
+      }
+    }
+  }
+}
