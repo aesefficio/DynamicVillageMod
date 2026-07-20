@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/sudolev/DynamicVillageMod/schemas/dynamicvillage-profession.schema.json",
+  "title": "Create: Dynamic Village — villager profession file",
+  "description": "Defines a new villager profession. Place at config/dynamicvillage/professions/<name>.json (config, NOT a data pack — professions register before data packs load).",
+  "type": "object",
+  "required": ["id"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "id": {
+      "type": "string",
+      "description": "Profession id (your namespace), also used as the POI id.",
+      "pattern": "^[a-z0-9_.-]+:[a-z0-9_./-]+$"
+    },
+    "job_site_block": {
+      "type": "string",
+      "description": "Block whose states form the job-site POI. Use this OR job_site_tag."
+    },
+    "job_site_tag": {
+      "type": "string",
+      "description": "Block tag whose blocks all form the job-site POI. Use this OR job_site_block."
+    },
+    "work_sound": {
+      "type": "string",
+      "description": "Sound event id played while working. Defaults to the generic villager work sound."
+    },
+    "search_distance": { "type": "integer", "minimum": 1, "default": 1 },
+    "max_tickets": { "type": "integer", "minimum": 1, "default": 1 },
+    "conditions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type"],
+        "additionalProperties": false,
+        "properties": {
+          "type": { "enum": ["mod_loaded", "item_exists", "block_exists"] },
+          "mod": { "type": "string" },
+          "id": { "type": "string" },
+          "negate": { "type": "boolean", "default": false }
+        }
+      }
+    }
+  },
+  "oneOf": [
+    { "required": ["job_site_block"] },
+    { "required": ["job_site_tag"] }
+  ]
+}

@@ -21,9 +21,9 @@
     { "level": 4, "cost": { "item": "create:large_water_wheel", "count": 4 }, "result": { "item": "minecraft:emerald", "count": 1 }, "max_uses": 6, "xp": 10, "price_multiplier": 0.01 },
     { "level": 4, "cost": { "item": "create:chute", "count": 3 }, "result": { "item": "minecraft:emerald", "count": 1 }, "max_uses": 10, "xp": 10, "price_multiplier": 0.01 },
 
-    { "level": 5, "cost": { "item": "minecraft:emerald", "count": 5 }, "result": { "item": "create:crushing_wheel", "count": 1 }, "max_uses": 8, "xp": 28, "price_multiplier": 0.01 },
+    { "level": 5, "cost": { "item": "minecraft:emerald", "count": 5 }, "result": { "item": "create:crushing_wheel", "count": 2 }, "max_uses": 8, "xp": 28, "price_multiplier": 0.01 },
     { "level": 5, "cost": { "item": "minecraft:emerald", "count": 9 }, "result": { "item": "create:mechanical_roller", "count": 2 }, "max_uses": 2, "xp": 24, "price_multiplier": 0.01 },
     { "level": 5, "cost": { "item": "minecraft:emerald", "count": 10 }, "result": { "item": "create:mechanical_arm", "count": 1 }, "max_uses": 3, "xp": 40, "price_multiplier": 0.01 },
-    { "level": 5, "cost": { "item": "minecraft:emerald", "count": 3 }, "result": { "item": "create:mechanical_crafter", "count": 2 }, "max_uses": 8, "xp": 12, "price_multiplier": 0.01 }
+    { "level": 5, "cost": { "item": "minecraft:emerald", "count": 5 }, "result": { "item": "create:mechanical_crafter", "count": 2 }, "max_uses": 8, "xp": 12, "price_multiplier": 0.01 }
   ]
 }

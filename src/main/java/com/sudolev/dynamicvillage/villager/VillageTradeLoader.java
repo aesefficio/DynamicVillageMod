@@ -6,10 +6,12 @@ import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.sudolev.dynamicvillage.condition.LoadCondition;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -25,9 +27,15 @@ import org.slf4j.Logger;
  * { "profession": "dynamicvillage:mechanical_engineer", "trades": [ ... ] }
  * </pre>
  *
- * <p>Files in different namespaces/paths are merged (additive). To change or remove the mod's
- * standard trades, override the file at the same path -- a higher-priority data pack fully replaces
- * that profession's default list (standard data pack behaviour).
+ * <p><b>Merging.</b> By default every file's trades are <em>appended</em> to their profession's pool,
+ * so any number of packs/mods contribute at once without clobbering each other. A file may set
+ * {@code "replace": true} to first clear everything accumulated for that profession, then add its
+ * own — use this to fully redefine a profession's trades. Files are processed in a deterministic
+ * order (sorted by file id) so {@code replace} behaves predictably when several packs are present.
+ *
+ * <p><b>Conditions.</b> A file may carry a {@code "conditions"} array (see {@link LoadCondition});
+ * if the conditions are not met the whole file is skipped. This lets a pack ship, e.g., trades that
+ * only load when another mod is present.
  */
 public class VillageTradeLoader extends SimpleJsonResourceReloadListener {
    private static final Logger LOGGER = LogUtils.getLogger();
@@ -46,26 +54,47 @@ public class VillageTradeLoader extends SimpleJsonResourceReloadListener {
    protected void apply(Map<ResourceLocation, JsonElement> files, ResourceManager resourceManager, ProfilerFiller profiler) {
       Map<ResourceLocation, List<VillageTradeEntry>> result = new HashMap<>();
       int trades = 0;
-      int skipped = 0;
+      int invalid = 0;
+      int conditioned = 0;
 
-      for (Map.Entry<ResourceLocation, JsonElement> file : files.entrySet()) {
+      // Sort by file id so `replace` and append order are deterministic regardless of pack scan order.
+      for (Map.Entry<ResourceLocation, JsonElement> file : new TreeMap<>(files).entrySet()) {
          var parsed = TradeSet.CODEC.parse(JsonOps.INSTANCE, file.getValue());
          if (parsed.error().isPresent()) {
             LOGGER.warn("[DynamicVillage] Skipping invalid trade file {}: {}", file.getKey(), parsed.error().get().message());
-            skipped++;
+            invalid++;
             continue;
          }
+
          TradeSet set = parsed.result().orElseThrow();
-         result.computeIfAbsent(set.profession(), key -> new ArrayList<>()).addAll(set.trades());
+         if (!LoadCondition.allMet(set.conditions())) {
+            LOGGER.info("[DynamicVillage] Trade file {} skipped: its conditions are not met.", file.getKey());
+            conditioned++;
+            continue;
+         }
+
+         if (set.replace()) {
+            result.put(set.profession(), new ArrayList<>(set.trades()));
+            LOGGER.info("[DynamicVillage] Trade file {} replaces trades for profession {}.", file.getKey(), set.profession());
+         } else {
+            result.computeIfAbsent(set.profession(), key -> new ArrayList<>()).addAll(set.trades());
+         }
          trades += set.trades().size();
       }
 
       byProfession = result;
+      StringBuilder note = new StringBuilder();
+      if (invalid > 0) {
+         note.append(" (").append(invalid).append(" invalid file(s) skipped)");
+      }
+      if (conditioned > 0) {
+         note.append(" (").append(conditioned).append(" file(s) skipped by conditions)");
+      }
       LOGGER.info(
          "[DynamicVillage] Loaded {} villager trade(s) across {} profession(s){}",
          trades,
          result.size(),
-         skipped > 0 ? " (" + skipped + " invalid file(s) skipped)" : ""
+         note.toString()
       );
    }
 
@@ -74,12 +103,14 @@ public class VillageTradeLoader extends SimpleJsonResourceReloadListener {
       return byProfession.getOrDefault(profession, List.of());
    }
 
-   /** One trade JSON file: a profession id plus its list of trades. */
-   private record TradeSet(ResourceLocation profession, List<VillageTradeEntry> trades) {
+   /** One trade JSON file: a profession id, its list of trades, and optional conditions/replace flag. */
+   private record TradeSet(ResourceLocation profession, List<VillageTradeEntry> trades, List<LoadCondition> conditions, boolean replace) {
       static final Codec<TradeSet> CODEC = RecordCodecBuilder.create(
          instance -> instance.group(
                ResourceLocation.CODEC.fieldOf("profession").forGetter(TradeSet::profession),
-               VillageTradeEntry.CODEC.listOf().fieldOf("trades").forGetter(TradeSet::trades)
+               VillageTradeEntry.CODEC.listOf().fieldOf("trades").forGetter(TradeSet::trades),
+               LoadCondition.CODEC.listOf().optionalFieldOf("conditions", List.of()).forGetter(TradeSet::conditions),
+               Codec.BOOL.optionalFieldOf("replace", false).forGetter(TradeSet::replace)
             )
             .apply(instance, TradeSet::new)
       );

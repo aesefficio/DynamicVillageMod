@@ -1,0 +1,24 @@
+{
+  "$schema": "../../../../../../schemas/dynamicvillage-trades.schema.json",
+  "profession": "dynamicvillage:mechanical_engineer",
+  "conditions": [
+    { "type": "mod_loaded", "mod": "create" }
+  ],
+  "trades": [
+    {
+      "level": 1,
+      "cost": { "tag": "c:ingots/zinc", "count": { "min": 2, "max": 4 } },
+      "result": { "item": "minecraft:emerald", "count": 1 },
+      "max_uses": 12,
+      "xp": 4
+    },
+    {
+      "level": 3,
+      "cost": { "item": "minecraft:emerald", "count": { "min": 6, "max": 9 } },
+      "result": { "item": "create:precision_mechanism", "count": 1 },
+      "max_uses": 5,
+      "xp": 20,
+      "price_multiplier": 0.02
+    }
+  ]
+}

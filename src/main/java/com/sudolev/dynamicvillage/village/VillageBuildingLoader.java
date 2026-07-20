@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.JsonOps;
+import com.sudolev.dynamicvillage.condition.LoadCondition;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +23,9 @@ import org.slf4j.Logger;
  * The parsed entries are grouped by target pool and read by {@link VillageAddition} when the world
  * starts.
  *
- * <p>Invalid entries are logged and skipped; one bad file never breaks the rest.
+ * <p>Invalid entries are logged and skipped; one bad file never breaks the rest. A building may also
+ * carry a {@code "conditions"} array (see {@link LoadCondition}) and is skipped when any condition is
+ * unmet -- e.g. a building that should only appear when another mod is present.
  */
 public class VillageBuildingLoader extends SimpleJsonResourceReloadListener {
    private static final Logger LOGGER = LogUtils.getLogger();
@@ -42,27 +45,41 @@ public class VillageBuildingLoader extends SimpleJsonResourceReloadListener {
    protected void apply(Map<ResourceLocation, JsonElement> files, ResourceManager resourceManager, ProfilerFiller profiler) {
       Map<ResourceLocation, List<VillageBuildingEntry>> result = new HashMap<>();
       int loaded = 0;
-      int skipped = 0;
+      int invalid = 0;
+      int conditioned = 0;
 
       for (Map.Entry<ResourceLocation, JsonElement> file : files.entrySet()) {
          var parsed = VillageBuildingEntry.CODEC.parse(JsonOps.INSTANCE, file.getValue());
          if (parsed.error().isPresent()) {
             LOGGER.warn("[DynamicVillage] Skipping invalid building definition {}: {}", file.getKey(), parsed.error().get().message());
-            skipped++;
+            invalid++;
             continue;
          }
 
          VillageBuildingEntry entry = parsed.result().orElseThrow();
+         if (!LoadCondition.allMet(entry.conditions())) {
+            LOGGER.info("[DynamicVillage] Building {} skipped: its conditions are not met.", file.getKey());
+            conditioned++;
+            continue;
+         }
+
          result.computeIfAbsent(entry.pool(), key -> new ArrayList<>()).add(entry);
          loaded++;
       }
 
       byPool = result;
+      StringBuilder note = new StringBuilder();
+      if (invalid > 0) {
+         note.append(" (").append(invalid).append(" invalid skipped)");
+      }
+      if (conditioned > 0) {
+         note.append(" (").append(conditioned).append(" skipped by conditions)");
+      }
       LOGGER.info(
          "[DynamicVillage] Loaded {} village building definition(s) across {} pool(s){}",
          loaded,
          result.size(),
-         skipped > 0 ? " (" + skipped + " invalid skipped)" : ""
+         note.toString()
       );
    }
 

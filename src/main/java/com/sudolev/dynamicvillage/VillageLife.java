@@ -22,6 +22,7 @@ public class VillageLife {
    public VillageLife(IEventBus modEventBus, ModContainer modContainer) {
       modEventBus.addListener(this::commonSetup);
       ModVillagers.register(modEventBus);
+      com.sudolev.dynamicvillage.profession.ProfessionRegistrar.register(modEventBus);
       NeoForge.EVENT_BUS.register(this);
       modContainer.registerConfig(ModConfig.Type.COMMON, VillageConfig.SPEC);
 

@@ -53,6 +53,67 @@ The end-user's `buildingSpawnChancePercent` config controls how much of a villag
 building's share of that custom budget. The two are independent: users tune the overall amount,
 you tune the relative mix.
 
+# Adding a new villager profession
+
+You can add a **brand-new profession** (with its own job-site block and trades) using only JSON.
+
+**Important — this one uses `config/`, not a data pack.** Villager professions and their POI
+(job-site) types live in registries that Minecraft freezes during mod loading, *before* any world
+data pack is read. So new professions cannot come from a world data pack — the mod instead reads
+them from the **config directory**, which is available that early. A modpack ships them in its
+`config/` (or `defaultconfigs/`) folder. Everything else — the profession's trades and buildings —
+still uses the normal data-pack systems.
+
+## 1. Add a profession definition
+
+Drop a JSON file in:
+
+```
+config/dynamicvillage/professions/<any_name>.json
+```
+
+```json
+{
+  "id": "mypack:logistics_engineer",
+  "job_site_block": "create:packager",
+  "work_sound": "minecraft:entity.villager.work_toolsmith"
+}
+```
+
+### Fields
+
+| Field            | Required | Default | Description |
+|------------------|----------|---------|-------------|
+| `id`             | yes      | —       | Profession id (your namespace). Also used as the id of its POI type. |
+| `job_site_block` | one of   | —       | Block whose states become the job-site POI. Use this **or** `job_site_tag`. |
+| `job_site_tag`   | one of   | —       | Block tag whose blocks all become valid job sites. |
+| `work_sound`     | no       | villager work sound | Sound event id played while working. |
+| `search_distance`| no       | 1       | POI validity/search range. |
+| `max_tickets`    | no       | 1       | How many villagers may claim one job site. |
+| `conditions`     | no       | —       | Load conditions (see below); the profession is skipped if any is unmet. |
+
+## 2. Make the job acquirable (data-pack tag)
+
+For villagers to actually take the job, the POI must be in `minecraft:acquirable_job_site`. Add a
+normal data-pack tag entry (this part *is* a data pack) listing your profession id:
+
+```
+data/minecraft/tags/point_of_interest_type/acquirable_job_site.json
+```
+```json
+{ "replace": false, "values": ["mypack:logistics_engineer"] }
+```
+
+## 3. Add its trades
+
+Use the normal trade system (below), targeting your new id:
+`"profession": "mypack:logistics_engineer"`.
+
+The log confirms registration on startup:
+`[DynamicVillage] Registered profession mypack:logistics_engineer`.
+
+---
+
 # Adding or changing villager trades
 
 Villager trades are also data driven. The mod ships standard trades for its professions, and you
@@ -92,28 +153,103 @@ Each file targets one profession and lists its trades:
 | Field              | Required | Default | Description |
 |--------------------|----------|---------|-------------|
 | `level`            | yes      | —       | Villager tier 1–5 that unlocks the trade. |
-| `cost`             | yes      | —       | `{ "item", "count" }` the villager takes. |
-| `cost2`            | no       | none    | Optional second cost item. |
-| `result`           | yes      | —       | `{ "item", "count" }` the villager gives. |
+| `cost`             | yes      | —       | Item spec (see below) the villager takes. |
+| `cost2`            | no       | none    | Optional second cost item spec. |
+| `result`           | yes      | —       | Item spec the villager gives. |
 | `max_uses`         | no       | 12      | Times the trade can be used before it locks. |
 | `xp`               | no       | 2       | Villager XP granted per trade. |
 | `price_multiplier` | no       | 0.05    | How much demand raises the price. |
 
+### Item spec (`cost`, `cost2`, `result`)
+
+Each is an object with **exactly one** of `item`/`tag`, plus an optional `count`:
+
+| Field   | Description |
+|---------|-------------|
+| `item`  | An exact item id, e.g. `minecraft:emerald`. |
+| `tag`   | An item tag id, e.g. `c:ingots/zinc`. Resolves to the **first registered item** in that tag — handy for "whatever zinc ingot this pack provides". Use `item` **or** `tag`, not both. |
+| `count` | A fixed number (`"count": 3`) **or** a random range (`"count": { "min": 2, "max": 5 }`) rolled per generated offer. Defaults to `1`. |
+| `components` | (applies to `result` only) Extra data attached to the item — enchantments, custom name, dye, potion, etc. **Version-specific:** on 1.21.x this is a data-components object; on 1.20.x it is an item-NBT object. This is the one field whose contents differ between Minecraft versions. |
+
+Enchanted-book result on **1.21.x** (data components):
+
+```json
+"result": {
+  "item": "minecraft:enchanted_book",
+  "components": { "minecraft:stored_enchantments": { "levels": { "minecraft:efficiency": 3 } } }
+}
+```
+
+The same on **1.20.x** (item NBT):
+
+```json
+"result": {
+  "item": "minecraft:enchanted_book",
+  "components": { "StoredEnchantments": [ { "id": "minecraft:efficiency", "lvl": 3 } ] }
+}
+```
+
+```json
+{
+  "level": 3,
+  "cost":   { "tag": "c:ingots/zinc", "count": { "min": 2, "max": 4 } },
+  "result": { "item": "create:precision_mechanism", "count": 1 },
+  "max_uses": 5
+}
+```
+
+The old `{ "item": "...", "count": 2 }` form still works exactly as before — the new fields are
+optional additions.
+
 ## 2. Add vs change vs remove
 
-- **Add new trades:** put a file in *your* namespace — its trades are appended.
-- **Change/remove ours:** override the file at the *same path* — e.g. a higher-priority data pack
-  with `data/dynamicvillage/dynamicvillage/trades/miner.json` fully replaces the Miner's default
-  trade list, so you can edit, reorder, or delete trades.
+- **Add new trades (recommended):** put a file in *your* namespace — its trades are **appended** to
+  the profession's pool, composing cleanly with the mod's defaults and any other pack.
+- **Replace a profession's trades:** add `"replace": true` to your file. This clears everything
+  accumulated for that profession first, then adds your trades. Unlike the same-path override below,
+  it works from any namespace. When multiple packs are present, files are processed in a
+  deterministic order (sorted by file id) so `replace` behaves predictably.
+- **Change/remove ours by override:** override the file at the *same path* — e.g. a higher-priority
+  data pack with `data/dynamicvillage/dynamicvillage/trades/miner.json` fully replaces the Miner's
+  default trade list.
+
+## 3. Conditions (load only when...)
+
+Any trade **or** building file may carry a `conditions` array. If **all** conditions pass, the file
+loads; otherwise it is skipped (logged at info level — an unmet condition is normal). This lets one
+pack ship cross-mod content safely.
+
+```json
+{
+  "conditions": [
+    { "type": "mod_loaded", "mod": "immersiveengineering" }
+  ],
+  "profession": "dynamicvillage:mechanical_engineer",
+  "trades": [ /* only loaded when Immersive Engineering is present */ ]
+}
+```
+
+| `type`         | Needs  | True when… |
+|----------------|--------|------------|
+| `mod_loaded`   | `mod`  | that mod id is loaded. |
+| `item_exists`  | `id`   | that item id is registered. |
+| `block_exists` | `id`   | that block id is registered. |
+
+Add `"negate": true` to a single condition to invert it. This is a loader-neutral system evaluated
+by the mod itself (not Forge/NeoForge `*:conditions`), so the **same JSON works on every Minecraft
+version**.
 
 ## Notes
 
 - Changes apply on **world load / server restart** (not live `/reload`).
 - Invalid definitions are logged and skipped — one bad file won't break the others. Check the
   log for `[DynamicVillage]` lines to see what loaded.
-- A trade that references an item from a mod that isn't installed is skipped with a warning, so
+- A trade that references an item/tag from a mod that isn't installed is skipped with a warning, so
   packs referencing Create items won't crash a world without Create.
 - Requires the Create mod (this is a Create add-on).
+- **Editor autocomplete:** point your editor at `schemas/dynamicvillage-trades.schema.json` and
+  `schemas/dynamicvillage-building.schema.json` (via a `$schema` key or your editor's JSON-schema
+  settings). A ready-to-run sample pack lives in `examples/example-addon/`.
 
 ---
 
