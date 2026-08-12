@@ -53,6 +53,53 @@ The end-user's `buildingSpawnChancePercent` config controls how much of a villag
 building's share of that custom budget. The two are independent: users tune the overall amount,
 you tune the relative mix.
 
+# Giving a building's chests loot
+
+Buildings with chests spawn **empty** unless the chests are told which loot table to roll. You can
+assign a loot table to any building — this mod's or your own — with a tiny file, and the mod stamps
+that table onto the building's chests as the village generates (vanilla-style: the chest fills the
+first time it's opened). This affects **newly generated** villages only.
+
+## 1. Add a loot assignment
+
+Drop a JSON file whose path mirrors the **structure** it applies to. For structure `ns:path` (i.e.
+`data/ns/structure/path.nbt`), the assignment lives at:
+
+```
+data/<ns>/dynamicvillage/loot/<path>.json
+```
+
+```json
+{ "loot_table": "mypack:chests/my_building" }
+```
+
+| Field              | Required | Default | Description |
+|--------------------|----------|---------|-------------|
+| `loot_table`       | yes      | —       | Any loot table id — your own (`data/<ns>/loot_table/…`), one of this mod's (`dynamicvillage:chests/village/{miner,train_mechanic,hydraulic,mechanical_engineer}`), or vanilla (`minecraft:chests/village/village_plains_house`). If no loaded pack provides it, a warning is logged at startup. |
+| `override_existing`| no       | `false` | By default, chests that already carry a hand-authored `LootTable` in the NBT are left alone. Set `true` to replace even those. |
+| `conditions`       | no       | —       | Load conditions (see below); the assignment is skipped if any is unmet. |
+
+The loot table itself is a **normal Minecraft loot table** — author it the standard way; this file
+just points a building's chests at it.
+
+## 2. Re-loot another pack's (or this mod's) building
+
+Because the assignment is keyed by structure path, you override any building's loot by dropping a
+file at the **same path** — standard data pack priority decides the winner. For example, to change
+this mod's plains miner house loot, add:
+
+```
+data/dynamicvillage/dynamicvillage/loot/plains/plains_miner.json
+```
+```json
+{ "loot_table": "mypack:chests/richer_miner" }
+```
+
+No need to redefine the building — just its loot. On startup the log reports
+`[DynamicVillage] Loaded N chest loot assignment(s)`.
+
+---
+
 # Adding a new villager profession
 
 You can add a **brand-new profession** (with its own job-site block and trades) using only JSON.
@@ -85,12 +132,29 @@ config/dynamicvillage/professions/<any_name>.json
 | Field            | Required | Default | Description |
 |------------------|----------|---------|-------------|
 | `id`             | yes      | —       | Profession id (your namespace). Also used as the id of its POI type. |
-| `job_site_block` | one of   | —       | Block whose states become the job-site POI. Use this **or** `job_site_tag`. |
-| `job_site_tag`   | one of   | —       | Block tag whose blocks all become valid job sites. |
+| `job_site_block` | one of   | —       | A single block whose states become the job-site POI. |
+| `job_site_blocks`| one of   | —       | A list of block ids that together form the job-site POI. Use with or instead of `job_site_block`. |
 | `work_sound`     | no       | villager work sound | Sound event id played while working. |
-| `search_distance`| no       | 1       | POI validity/search range. |
-| `max_tickets`    | no       | 1       | How many villagers may claim one job site. |
+| `search_distance`| no       | 1       | POI validity/search range (values below 1 are raised to 1). |
+| `max_tickets`    | no       | 1       | How many villagers may claim one job site (values below 1 are raised to 1). |
 | `conditions`     | no       | —       | Load conditions (see below); the profession is skipped if any is unmet. |
+
+> **Block *tags* are not supported for job sites.** Tags are supplied by data packs and aren't loaded
+> until a world starts — long after professions have to be registered — so a tag could never be
+> resolved here. List the blocks explicitly with `job_site_blocks`. A definition still using the old
+> `job_site_tag` field is skipped with an explanatory error in the log.
+
+Several blocks example:
+
+```json
+{
+  "id": "mypack:logistics_engineer",
+  "job_site_blocks": ["create:packager", "create:item_vault"]
+}
+```
+
+Bad definitions never crash the game: a duplicate `id`, an id that clashes with an existing
+profession, or blocks that aren't registered are each logged and skipped.
 
 ## 2. Make the job acquirable (data-pack tag)
 
@@ -169,7 +233,7 @@ Each is an object with **exactly one** of `item`/`tag`, plus an optional `count`
 | `item`  | An exact item id, e.g. `minecraft:emerald`. |
 | `tag`   | An item tag id, e.g. `c:ingots/zinc`. Resolves to the **first registered item** in that tag — handy for "whatever zinc ingot this pack provides". Use `item` **or** `tag`, not both. |
 | `count` | A fixed number (`"count": 3`) **or** a random range (`"count": { "min": 2, "max": 5 }`) rolled per generated offer. Defaults to `1`. |
-| `components` | (applies to `result` only) Extra data attached to the item — enchantments, custom name, dye, potion, etc. **Version-specific:** on 1.21.x this is a data-components object; on 1.20.x it is an item-NBT object. This is the one field whose contents differ between Minecraft versions. |
+| `components` | **`result` only.** Extra data attached to the item — enchantments, custom name, dye, potion, etc. Costs are matched by item and count alone, so `components` on a `cost`/`cost2` does nothing and logs a warning. **Version-specific:** on 1.21.x this is a data-components object; on 1.20.x it is an item-NBT object. This is the one field whose contents differ between Minecraft versions. |
 
 Enchanted-book result on **1.21.x** (data components):
 

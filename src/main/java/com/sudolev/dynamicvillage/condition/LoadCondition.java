@@ -15,10 +15,9 @@ import org.slf4j.Logger;
  * environment (e.g. "only load if another mod is present"). Evaluated once at data (re)load time.
  *
  * <p>This is intentionally <em>not</em> Forge's {@code forge:conditions} / NeoForge's
- * {@code neoforge:conditions}: those use different JSON keys and APIs on the two loaders, which
- * would break the promise that a data pack's JSON is identical across every Minecraft version. This
- * mod evaluates a small, self-contained {@code conditions} block itself, so one file works
- * everywhere.
+ * {@code neoforge:conditions}: those use different JSON keys and APIs on the two loaders, which would
+ * break the promise that a data pack's JSON is identical across every Minecraft version. This mod
+ * evaluates a small, self-contained {@code conditions} block itself, so one file works everywhere.
  *
  * <p>JSON shape (a {@code "conditions"} array on the file/entry):
  * <pre>
@@ -69,8 +68,20 @@ public record LoadCondition(String type, Optional<String> mod, Optional<Resource
             }
             raw = ModList.get().isLoaded(mod.get());
          }
-         case "item_exists" -> raw = id.isPresent() && BuiltInRegistries.ITEM.containsKey(id.get());
-         case "block_exists" -> raw = id.isPresent() && BuiltInRegistries.BLOCK.containsKey(id.get());
+         case "item_exists" -> {
+            if (id.isEmpty()) {
+               LOGGER.warn("[DynamicVillage] Condition 'item_exists' is missing the 'id' field; treating as not met.");
+               return false;
+            }
+            raw = BuiltInRegistries.ITEM.containsKey(id.get());
+         }
+         case "block_exists" -> {
+            if (id.isEmpty()) {
+               LOGGER.warn("[DynamicVillage] Condition 'block_exists' is missing the 'id' field; treating as not met.");
+               return false;
+            }
+            raw = BuiltInRegistries.BLOCK.containsKey(id.get());
+         }
          default -> {
             LOGGER.warn("[DynamicVillage] Unknown condition type '{}'; treating as not met (skipping the file).", type);
             return false;

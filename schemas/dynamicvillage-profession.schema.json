@@ -4,10 +4,14 @@
   "title": "Create: Dynamic Village — villager profession file",
   "description": "Defines a new villager profession. Place at config/dynamicvillage/professions/<name>.json (config, NOT a data pack — professions register before data packs load).",
   "type": "object",
-  "required": ["id"],
+  "required": [
+    "id"
+  ],
   "additionalProperties": false,
   "properties": {
-    "$schema": { "type": "string" },
+    "$schema": {
+      "type": "string"
+    },
     "id": {
       "type": "string",
       "description": "Profession id (your namespace), also used as the POI id.",
@@ -15,35 +19,70 @@
     },
     "job_site_block": {
       "type": "string",
-      "description": "Block whose states form the job-site POI. Use this OR job_site_tag."
-    },
-    "job_site_tag": {
-      "type": "string",
-      "description": "Block tag whose blocks all form the job-site POI. Use this OR job_site_block."
+      "description": "A single block whose states form the job-site POI. Use with/instead of job_site_blocks."
     },
     "work_sound": {
       "type": "string",
       "description": "Sound event id played while working. Defaults to the generic villager work sound."
     },
-    "search_distance": { "type": "integer", "minimum": 1, "default": 1 },
-    "max_tickets": { "type": "integer", "minimum": 1, "default": 1 },
+    "search_distance": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 1
+    },
+    "max_tickets": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 1
+    },
     "conditions": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["type"],
+        "required": [
+          "type"
+        ],
         "additionalProperties": false,
         "properties": {
-          "type": { "enum": ["mod_loaded", "item_exists", "block_exists"] },
-          "mod": { "type": "string" },
-          "id": { "type": "string" },
-          "negate": { "type": "boolean", "default": false }
+          "type": {
+            "enum": [
+              "mod_loaded",
+              "item_exists",
+              "block_exists"
+            ]
+          },
+          "mod": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "negate": {
+            "type": "boolean",
+            "default": false
+          }
         }
       }
+    },
+    "job_site_blocks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      },
+      "description": "Several block ids whose states together form the job-site POI. Block TAGS are not supported here: tags come from data packs and are not loaded when professions must be registered."
     }
   },
-  "oneOf": [
-    { "required": ["job_site_block"] },
-    { "required": ["job_site_tag"] }
+  "anyOf": [
+    {
+      "required": [
+        "job_site_block"
+      ]
+    },
+    {
+      "required": [
+        "job_site_blocks"
+      ]
+    }
   ]
 }

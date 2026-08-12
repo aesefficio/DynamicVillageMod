@@ -1,13 +1,13 @@
 modLoader="javafml" #mandatory
 loaderVersion="${loader_version_range}" #mandatory
 license="${mod_license}"
-issueTrackerURL="https://github.com/sudolev/DynamicVillageMod/issues" #optional
+issueTrackerURL="https://github.com/aesefficio/DynamicVillageMod/issues" #optional
 
 [[mods]] #mandatory
 modId="${mod_id}" #mandatory
 version="${mod_version}" #mandatory
 displayName="${mod_name}" #mandatory
-displayURL="https://sudolev.github.io/DynamicVillageMod/" #optional
+displayURL="https://github.com/aesefficio/DynamicVillageMod" #optional
 logoFile="icon.png" #optional
 credits="Ben001109, Fatasiangamer" #optional
 authors="${mod_authors}" #optional

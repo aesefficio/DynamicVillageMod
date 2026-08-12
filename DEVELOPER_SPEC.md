@@ -23,7 +23,22 @@ differs. v6 folders are frozen as the reference/fallback.
 
 ---
 
-## Build status — v0.7 (this pass)
+## Build status — v0.8 (chest loot)
+
+| Feature | Status |
+|---------|--------|
+| Data-driven chest loot: `data/<ns>/dynamicvillage/loot/<structure>.json` → `{loot_table, override_existing, conditions}` | ✅ **Built** |
+| `dynamicvillage:chest_loot` structure processor (stamps `LootTable`+`LootTableSeed` on empty chests at placement) | ✅ **Built** |
+| Re-loot any building via same-path override; preserve hand-authored chests by default | ✅ **Built** |
+| 4 modest Create loot tables (miner / train_mechanic / hydraulic / mechanical_engineer) + 10 assignments for the mod's chest buildings | ✅ **Built** |
+| `savanna_miner` converted via `override_existing` (no NBT edit) | ✅ **Built** |
+| Loot schema + `DATAPACK.md` section + example | ✅ **Built** |
+
+**Verification (NeoForge 1.21.1 server boot):** ✅ `Loaded 10 chest loot assignment(s)`; ✅ all 5 pools injected buildings with the processor attached, no exceptions; ✅ the 4 loot tables passed Minecraft's loot codec (no parse errors); ✅ `Done`. Both trees compile clean. ✅ **Confirmed in-game:** generated village chests roll the loot. ✅ A boot with five deliberately-broken profession configs (unsupported tag field, duplicate id, clashing id, unregistered block, POI-clash) skipped each with one clear message and still reached `Done`.
+
+---
+
+## Build status — v0.7 (developer platform)
 
 | Section | Feature | Status |
 |---------|---------|--------|
@@ -200,11 +215,17 @@ data/<namespace>/dynamicvillage/professions/<any_name>.json
 | Field | Required | Default | Description |
 |-------|----------|---------|-------------|
 | `id` | yes | — | Profession id (your namespace). |
-| `job_site_block` | one of these | — | A single block id **or** `job_site_tag` for a block tag defining the POI. |
-| `job_site_tag` | one of these | — | Block tag whose blocks are all valid job sites. |
+| `job_site_block` | one of these | — | A single block id whose states form the POI. |
+| `job_site_blocks` | one of these | — | A list of block ids that together form the POI. |
 | `work_sound` | no | generic villager work | Sound event id played while working. |
-| `acquirable` | no | `true` | Whether villagers can claim this job site (adds to `acquirable_job_site`). |
+| `search_distance` | no | `1` | POI validity/search range (raised to 1 if lower). |
+| `max_tickets` | no | `1` | Villagers that may claim one job site (raised to 1 if lower). |
 | `conditions` | no | — | §4 conditions. |
+
+> **`job_site_tag` is not supported** (and never worked): block tags are supplied by data packs and
+> aren't bound when professions must be registered, so a tag could never resolve. A definition still
+> using it is skipped with an explanatory error. Villager job-claiming is enabled by adding the
+> profession id to the `minecraft:acquirable_job_site` tag in a normal data pack.
 
 Example:
 ```json
@@ -220,8 +241,9 @@ Example:
       the developer (P1).
 - [ ] The declared job-site block(s) are added to `minecraft:acquirable_job_site` so a villager can
       take the job (🧪 unemployed villager near the block becomes the profession).
-- [ ] Exactly one of `job_site_block` / `job_site_tag` is provided; both or neither ⇒ logged, file
-      skipped (P3).
+- [ ] At least one of `job_site_block` / `job_site_blocks` is provided; neither ⇒ logged, skipped (P3).
+- [ ] A duplicate id, an id clashing with an existing profession, or a job-site block already owned by
+      another POI ⇒ logged and skipped, never a startup crash (P3).
 - [ ] The new profession is a valid `profession` target for a §1 trade file (the three systems
       compose: profession + building + trades from one pack).
 - [ ] 🧪 A profession referencing a block from an absent mod is skipped, world still loads (P5).
