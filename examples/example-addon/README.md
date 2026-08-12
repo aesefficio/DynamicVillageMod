@@ -13,6 +13,7 @@ A complete, working Create: Dynamic Village add-on pack you can copy and adapt. 
 | `config/.../professions/logistics_engineer.json` | **config** | Defines a **new profession** whose job site is `create:packager`. |
 | `data/minecraft/tags/.../acquirable_job_site.json` | data pack | Makes the new profession's job site claimable by villagers. |
 | `data/.../trades/logistics_engineer.json` | data pack | Trades for the new profession — including a **count-range** result. |
+| `data/dynamicvillage/dynamicvillage/loot/plains/plains_train.json` | data pack | **Re-loots one of this mod's own buildings** — points the plains train house's chests at a vanilla loot table by dropping a same-path override (no need to redefine the building). |
 
 Because every data file lives under the `exampleaddon` namespace, nothing overwrites the mod's own
 files — it all **merges** in. To *replace* a profession's trades instead of appending, add

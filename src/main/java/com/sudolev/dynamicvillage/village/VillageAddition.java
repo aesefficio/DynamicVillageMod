@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
 import com.sudolev.dynamicvillage.VillageLife;
 import com.sudolev.dynamicvillage.config.VillageConfig;
+import com.sudolev.dynamicvillage.structure.ChestLootProcessor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.levelgen.structure.pools.EmptyPoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -49,6 +51,7 @@ public class VillageAddition {
    @SubscribeEvent
    public static void onAddReloadListeners(AddReloadListenerEvent event) {
       event.addListener(new VillageBuildingLoader());
+      event.addListener(new LootAssignmentLoader());
    }
 
    @SubscribeEvent
@@ -116,10 +119,6 @@ public class VillageAddition {
          return;
       }
 
-      int sizeBefore = pool.templates.size();
-      List<Pair<StructurePoolElement, Integer>> rawTemplates = new ArrayList<>(pool.rawTemplates);
-      List<StructurePoolElement> templates = new ArrayList<>(pool.templates);
-
       if (spawnChancePercent <= 0) {
          LOGGER.info("[DynamicVillage] Pool {}: spawn chance 0%, skipping {} custom building(s)", poolRL, entries.size());
          return;
@@ -132,14 +131,21 @@ public class VillageAddition {
          return;
       }
 
+      // Copy only once we know there is work to do.
+      int sizeBefore = pool.templates.size();
+      List<Pair<StructurePoolElement, Integer>> rawTemplates = new ArrayList<>(pool.rawTemplates);
+      List<StructurePoolElement> templates = new ArrayList<>(pool.templates);
+
       // The config controls the TOTAL custom share vs vanilla; each entry's weight controls its
       // share of that custom budget (so data packs tune relative frequency per building).
       int vanillaWeight = rawTemplates.stream().mapToInt(Pair::getSecond).sum();
       int customTotalWeight;
       if (spawnChancePercent >= 100) {
-         // Keep vanilla entries as a fallback for plot shapes our buildings don't fit,
-         // but make custom buildings overwhelmingly likely wherever they do fit.
-         customTotalWeight = Math.max(1, vanillaWeight) * 1000;
+         // Keep vanilla entries as a fallback for plot shapes our buildings don't fit, but make custom
+         // buildings overwhelmingly likely wherever they do fit. The pool's `templates` list holds one
+         // element per weight unit, so this multiplier is also an allocation: 50x is already ~98%
+         // custom and costs a fraction of the memory a larger factor would.
+         customTotalWeight = Math.max(1, vanillaWeight) * 50;
       } else {
          customTotalWeight = Math.max(1, vanillaWeight * spawnChancePercent / (100 - spawnChancePercent));
       }
@@ -158,8 +164,18 @@ public class VillageAddition {
          // Proportional split of the custom budget by relative weight (rounded), min 1 so each building can appear.
          int entryWeight = (int) Math.max(1L, Math.round((double) customTotalWeight * entry.weight() / totalRelative));
 
+         // If this structure has a chest loot assignment, append our loot processor to its processor list
+         // so chests get a loot table stamped on at placement.
+         Holder<StructureProcessorList> effectiveProcessors = procHolder.get();
+         LootAssignment loot = LootAssignmentLoader.forStructure(entry.structure());
+         if (loot != null) {
+            List<StructureProcessor> combined = new ArrayList<>(procHolder.get().value().list());
+            combined.add(new ChestLootProcessor(loot.lootTable(), loot.overrideExisting()));
+            effectiveProcessors = Holder.direct(new StructureProcessorList(combined));
+         }
+
          SinglePoolElement piece = (SinglePoolElement) SinglePoolElement
-            .single(entry.structure().toString(), procHolder.get())
+            .single(entry.structure().toString(), effectiveProcessors)
             .apply(entry.projection());
 
          for (int i = 0; i < entryWeight; i++) {

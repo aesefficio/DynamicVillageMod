@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "dynamicvillage:create_engineer_poi",
     "dynamicvillage:create_hydraulic_engineer_poi",

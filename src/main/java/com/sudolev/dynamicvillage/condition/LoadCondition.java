@@ -68,8 +68,20 @@ public record LoadCondition(String type, Optional<String> mod, Optional<Resource
             }
             raw = ModList.get().isLoaded(mod.get());
          }
-         case "item_exists" -> raw = id.isPresent() && BuiltInRegistries.ITEM.containsKey(id.get());
-         case "block_exists" -> raw = id.isPresent() && BuiltInRegistries.BLOCK.containsKey(id.get());
+         case "item_exists" -> {
+            if (id.isEmpty()) {
+               LOGGER.warn("[DynamicVillage] Condition 'item_exists' is missing the 'id' field; treating as not met.");
+               return false;
+            }
+            raw = BuiltInRegistries.ITEM.containsKey(id.get());
+         }
+         case "block_exists" -> {
+            if (id.isEmpty()) {
+               LOGGER.warn("[DynamicVillage] Condition 'block_exists' is missing the 'id' field; treating as not met.");
+               return false;
+            }
+            raw = BuiltInRegistries.BLOCK.containsKey(id.get());
+         }
          default -> {
             LOGGER.warn("[DynamicVillage] Unknown condition type '{}'; treating as not met (skipping the file).", type);
             return false;

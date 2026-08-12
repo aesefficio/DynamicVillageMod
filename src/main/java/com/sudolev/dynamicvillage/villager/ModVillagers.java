@@ -2,10 +2,6 @@ package com.sudolev.dynamicvillage.villager;
 
 import com.google.common.collect.ImmutableSet;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.fluids.drain.ItemDrainBlock;
-import com.simibubi.create.content.kinetics.drill.DrillBlock;
-import com.simibubi.create.content.schematics.table.SchematicTableBlock;
-import com.simibubi.create.content.trains.station.StationBlock;
 import com.sudolev.dynamicvillage.VillageLife;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
@@ -20,16 +16,16 @@ public class ModVillagers {
    public static final DeferredRegister<VillagerProfession> VILLAGER_PROFESSIONS = DeferredRegister.create(Registries.VILLAGER_PROFESSION, VillageLife.MODID);
 
    public static final DeferredHolder<PoiType, PoiType> CREATE_ENGINEER_POI = POI_TYPES.register(
-      "create_engineer_poi", () -> new PoiType(ImmutableSet.copyOf(((SchematicTableBlock) AllBlocks.SCHEMATIC_TABLE.get()).getStateDefinition().getPossibleStates()), 1, 3)
+      "create_engineer_poi", () -> new PoiType(ImmutableSet.copyOf(AllBlocks.SCHEMATIC_TABLE.get().getStateDefinition().getPossibleStates()), 1, 3)
    );
    public static final DeferredHolder<PoiType, PoiType> CREATE_HYDRAULIC_ENGINEER_POI = POI_TYPES.register(
-      "create_hydraulic_engineer_poi", () -> new PoiType(ImmutableSet.copyOf(((ItemDrainBlock) AllBlocks.ITEM_DRAIN.get()).getStateDefinition().getPossibleStates()), 1, 2)
+      "create_hydraulic_engineer_poi", () -> new PoiType(ImmutableSet.copyOf(AllBlocks.ITEM_DRAIN.get().getStateDefinition().getPossibleStates()), 1, 2)
    );
    public static final DeferredHolder<PoiType, PoiType> CREATE_MINER_POI = POI_TYPES.register(
-      "create_miner_poi", () -> new PoiType(ImmutableSet.copyOf(((DrillBlock) AllBlocks.MECHANICAL_DRILL.get()).getStateDefinition().getPossibleStates()), 1, 1)
+      "create_miner_poi", () -> new PoiType(ImmutableSet.copyOf(AllBlocks.MECHANICAL_DRILL.get().getStateDefinition().getPossibleStates()), 1, 1)
    );
    public static final DeferredHolder<PoiType, PoiType> CREATE_MECHANIC_POI = POI_TYPES.register(
-      "create_mechanic_poi", () -> new PoiType(ImmutableSet.copyOf(((StationBlock) AllBlocks.TRACK_STATION.get()).getStateDefinition().getPossibleStates()), 1, 2)
+      "create_mechanic_poi", () -> new PoiType(ImmutableSet.copyOf(AllBlocks.TRACK_STATION.get().getStateDefinition().getPossibleStates()), 1, 2)
    );
 
    public static final DeferredHolder<VillagerProfession, VillagerProfession> MECHANICAL_ENGINEER = VILLAGER_PROFESSIONS.register(

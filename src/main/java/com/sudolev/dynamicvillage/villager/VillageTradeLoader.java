@@ -79,7 +79,12 @@ public class VillageTradeLoader extends SimpleJsonResourceReloadListener {
          } else {
             result.computeIfAbsent(set.profession(), key -> new ArrayList<>()).addAll(set.trades());
          }
-         trades += set.trades().size();
+      }
+
+      // Count what actually survived: a later `replace` can discard trades added by an earlier file,
+      // so summing per-file totals would over-report.
+      for (List<VillageTradeEntry> perProfession : result.values()) {
+         trades += perProfession.size();
       }
 
       byProfession = result;

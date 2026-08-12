@@ -62,10 +62,15 @@ public class VillageTrades {
 
       for (VillageTradeEntry entry : entries) {
          int level = Math.max(1, Math.min(5, entry.level()));
+         if (level != entry.level()) {
+            LOGGER.warn("[DynamicVillage] Trade for {}: level {} is outside 1-5; using {}.", professionId, entry.level(), level);
+         }
          List<ItemListing> levelTrades = trades.get(level);
          if (levelTrades == null) {
+            LOGGER.warn("[DynamicVillage] Trade for {}: no trade list exists for level {}; skipping.", professionId, level);
             continue;
          }
+         warnIfComponentsIgnored(entry, professionId);
 
          Item costItem = resolve(entry.cost(), professionId);
          Item resultItem = resolve(entry.result(), professionId);
@@ -107,6 +112,21 @@ public class VillageTrades {
       }
 
       LOGGER.info("[DynamicVillage] Added {} trade(s) to profession {}", added, professionId);
+   }
+
+   /**
+    * {@code components} is only applied to a trade's {@code result}. Costs are matched by item and
+    * count alone, so components there would silently do nothing — say so rather than leaving a pack
+    * author wondering why their component-matched cost accepts any plain item.
+    */
+   private static void warnIfComponentsIgnored(VillageTradeEntry entry, ResourceLocation professionId) {
+      if (entry.cost().components().isPresent() || entry.cost2().map(c -> c.components().isPresent()).orElse(false)) {
+         LOGGER.warn(
+            "[DynamicVillage] Trade for {}: 'components' on a cost is ignored (costs match by item and count only); "
+               + "it only applies to 'result'.",
+            professionId
+         );
+      }
    }
 
    /**
