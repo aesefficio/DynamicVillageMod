@@ -23,6 +23,30 @@ differs. v6 folders are frozen as the reference/fallback.
 
 ---
 
+## Build status — v0.9 (village shape)
+
+| Feature | Status |
+|---------|--------|
+| All 20 building structures rebuilt | ✅ **Built** |
+| Loot assignments extended from 10 → **all 20** buildings (8 had chests but no loot) | ✅ **Built** |
+| Per-pool density: `data/<ns>/dynamicvillage/pools/<pool>.json` → `{weight_multiplier, conditions}` | ✅ **Built** |
+| Per-biome density config (`biomeDensity`), multiplies with the data-pack value | ✅ **Built** |
+| Per-biome village size/reach config (`villageSize`), via access transformer on `JigsawStructure` | ✅ **Built** |
+| Pool-settings JSON schema + `DATAPACK.md` coverage | ✅ **Built** |
+
+**Verification (NeoForge 1.21.1 server boot):** ✅ `Loaded 20 chest loot assignment(s)` and `Loaded 5
+pool setting(s)`; ✅ a pool multiplier of 3.0 produced `72 -> 188` entries for desert while other pools
+stayed unchanged, from both the data file and the config independently; ✅ shipped size defaults applied
+at load (`village_savanna: size 6 -> 7, max distance 80 -> 60`) with snowy/taiga correctly silent
+because they match vanilla; ✅ `Done`, no errors. Both trees compile and build.
+⏳ Not gameplay-tested: the rebuilt structures in a live world.
+
+**Known, deliberately unshipped:** 19 of the 20 rebuilt structures still place air at the base layer,
+which carves a ring into the surrounding ground. Installed as-authored at the author's request; a
+one-pass fix (fill exterior y=0 air with the structure's dominant ground block) is available.
+
+---
+
 ## Build status — v0.8 (chest loot)
 
 | Feature | Status |

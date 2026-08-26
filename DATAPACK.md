@@ -100,6 +100,70 @@ No need to redefine the building — just its loot. On startup the log reports
 
 ---
 
+# Tuning how many custom buildings a biome gets
+
+A building's own `weight` is relative to the **other custom buildings in the same pool**, so raising
+all of them equally changes nothing. To make one biome carry more (or fewer) custom buildings overall,
+scale the pool itself.
+
+## Per-pool settings (data pack)
+
+Drop a JSON file whose path mirrors the **pool** it tunes. For pool `ns:path`, the file lives at:
+
+```
+data/<ns>/dynamicvillage/pools/<path>.json
+```
+
+So `minecraft:village/desert/houses` is `data/minecraft/dynamicvillage/pools/village/desert/houses.json`:
+
+```json
+{ "weight_multiplier": 2.0 }
+```
+
+| Field | Required | Default | Description |
+|-------|----------|---------|-------------|
+| `weight_multiplier` | no | `1.0` | Scales this pool's custom-building budget. `1.0` = unchanged, `2.0` = twice as many, `0` = none. Clamped to 0–100. |
+| `conditions` | no | — | Load conditions (see below); the settings are ignored if any is unmet. |
+
+This works for **any** pool, including modded biomes and non-house pools.
+
+## Per-biome config (end users)
+
+For the five vanilla village biomes, players can tune the same thing in-game without a data pack, under
+**Mods → Create: Dynamic Village → Config → biomeDensity**:
+
+```toml
+[biomeDensity]
+	plainsDensity = 1.0
+	desertDensity = 1.0
+	savannaDensity = 1.0
+	snowyDensity = 1.0
+	taigaDensity = 1.0
+```
+
+**The two multiply together.** A data pack can scale a modded biome's pool while the player still tunes
+the vanilla ones — neither overrides the other.
+
+## Village size (end users)
+
+Also in the config, **villageSize** changes how large villages generate at all — this edits the vanilla
+village structures, so it affects the whole village, not just this mod's buildings:
+
+```toml
+[villageSize]
+	plainsSize = 7          # layout expansion steps from the town centre
+	plainsMaxDistance = 60  # furthest a piece may be placed, in blocks
+```
+
+`size` is capped at 20 (vanilla villages use 6) and `maxDistance` at 128 (vanilla 80). Raise them
+**together** — a large `size` with a small `maxDistance` wastes generation work, because pieces landing
+beyond the distance are discarded. Bigger villages cost more world-generation time.
+
+This mod ships tuned defaults rather than vanilla's: plains 7/60, desert 7/80, savanna 7/60,
+snowy 6/80, taiga 6/80. Set every size to 6 and every maxDistance to 80 for vanilla-sized villages.
+
+---
+
 # Adding a new villager profession
 
 You can add a **brand-new profession** (with its own job-site block and trades) using only JSON.
