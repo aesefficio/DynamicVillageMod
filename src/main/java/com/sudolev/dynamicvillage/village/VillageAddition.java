@@ -52,6 +52,7 @@ public class VillageAddition {
    public static void onAddReloadListeners(AddReloadListenerEvent event) {
       event.addListener(new VillageBuildingLoader());
       event.addListener(new LootAssignmentLoader());
+      event.addListener(new PoolSettingsLoader());
    }
 
    @SubscribeEvent
@@ -149,6 +150,17 @@ public class VillageAddition {
          customTotalWeight = Math.max(1, vanillaWeight * spawnChancePercent / (100 - spawnChancePercent));
       }
 
+      // Per-pool multiplier lets one biome carry more or fewer custom buildings than another. A
+      // building.s own weight is relative within the pool, so only this can shift a pool.s total share.
+      // Two sources compose: the in-game config (per vanilla biome) and any data pack pool settings
+      // (which also work for modded biomes and non-house pools).
+      double poolMultiplier = PoolSettingsLoader.forPool(poolRL).effectiveMultiplier() * VillageConfig.densityFor(poolRL);
+      if (poolMultiplier <= 0.0D) {
+         LOGGER.info("[DynamicVillage] Pool {}: density multiplier 0, skipping {} custom building(s)", poolRL, weighted.size());
+         return;
+      }
+      customTotalWeight = (int) Math.max(1L, Math.round(customTotalWeight * poolMultiplier));
+
       int totalRelative = weighted.stream().mapToInt(VillageBuildingEntry::weight).sum();
       int added = 0;
 
@@ -189,8 +201,8 @@ public class VillageAddition {
       pool.templates.addAll(templates);
       pool.rawTemplates = rawTemplates;
       LOGGER.info(
-         "[DynamicVillage] Pool {}: added {} custom building(s) at {}% spawn chance ({} -> {} entries)",
-         poolRL, added, spawnChancePercent, sizeBefore, pool.templates.size()
+         "[DynamicVillage] Pool {}: added {} custom building(s) at {}% spawn chance x{} multiplier ({} -> {} entries)",
+         poolRL, added, spawnChancePercent, poolMultiplier, sizeBefore, pool.templates.size()
       );
    }
 }

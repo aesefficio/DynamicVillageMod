@@ -1,5 +1,33 @@
 # Changelog
 
+## v0.9 — Village Shape
+
+Rebuilt every building, and added control over how big villages are and how much of them is this mod.
+
+### For players
+- **All 20 buildings rebuilt.** Every workshop was re-made from scratch to fix layout and structural
+  problems in the originals.
+- **Every building's chests now have loot.** Previously only 10 of the 20 buildings were wired up, so
+  chests in the rest generated empty — including all the mechanical engineer workshops.
+- **Villages are bigger.** The mod now ships tuned village sizes instead of vanilla's uniform 6/80:
+  plains 7/60, desert 7/80, savanna 7/60, snowy 6/80, taiga 6/80. All adjustable, see below.
+- **Two new config sections:**
+  - `biomeDensity` — how many of this mod's buildings appear per biome (`1.0` = unchanged).
+  - `villageSize` — how large villages generate, per biome (`size` up to 20, `maxDistance` up to 128).
+    Set every size to 6 and maxDistance to 80 for vanilla-sized villages.
+
+### For data pack & mod developers
+- **Per-pool density**: `data/<ns>/dynamicvillage/pools/<pool_path>.json` with `weight_multiplier`
+  scales one pool's custom-building budget. Works for any pool, including modded biomes and non-house
+  pools — a building's own `weight` is relative within its pool, so this is the only way to shift a
+  pool's total share. Multiplies with the player's `biomeDensity` config, so both apply.
+- New pool-settings JSON schema, and a `DATAPACK.md` section covering density and village size.
+
+### Notes
+- Village size and building changes affect **newly generated** villages only.
+- `villageSize` edits the vanilla village structures, so it changes the whole village — not just this
+  mod's buildings.
+
 ## v0.8 — Chest Loot
 
 Village-building chests used to spawn **empty** — the structures saved plain chests with no loot

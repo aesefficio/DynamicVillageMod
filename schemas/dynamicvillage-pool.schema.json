@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/aesefficio/DynamicVillageMod/schemas/dynamicvillage-pool.schema.json",
+  "title": "Create: Dynamic Village — village pool settings",
+  "description": "Scales how many custom buildings one village pool receives. Place at data/<ns>/dynamicvillage/pools/<pool_path>.json, where the file's own id mirrors the pool it tunes (pool ns:path -> file data/ns/dynamicvillage/pools/path.json).",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "weight_multiplier": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 1.0,
+      "description": "Scales this pool's custom-building budget. 1.0 = unchanged, 2.0 = twice as many, 0 = none. Multiplies with the end user's per-biome config setting."
+    },
+    "conditions": {
+      "type": "array",
+      "description": "Optional load conditions; ALL must be met or these settings are ignored.",
+      "items": {
+        "type": "object",
+        "required": ["type"],
+        "additionalProperties": false,
+        "properties": {
+          "type": { "enum": ["mod_loaded", "item_exists", "block_exists"] },
+          "mod": { "type": "string" },
+          "id": { "type": "string" },
+          "negate": { "type": "boolean", "default": false }
+        }
+      }
+    }
+  }
+}
