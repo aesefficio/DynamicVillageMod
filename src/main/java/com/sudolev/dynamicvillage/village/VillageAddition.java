@@ -47,6 +47,12 @@ public class VillageAddition {
       new ResourceLocation("minecraft:village/taiga/decor")
    );
 
+   /**
+    * Ceiling on one pool's total custom weight. The pool expands into one list entry per weight unit, so
+    * this bounds memory; at this size even a large vanilla pool is over 99% custom, so nothing is lost.
+    */
+   private static final int MAX_CUSTOM_WEIGHT = 50_000;
+
    /** Register the data pack reload listener that loads building definitions. */
    @SubscribeEvent
    public static void onAddReloadListeners(AddReloadListenerEvent event) {
@@ -140,14 +146,16 @@ public class VillageAddition {
 
       // The config controls the TOTAL custom share vs vanilla; each entry's weight controls its
       // share of that custom budget (so data packs tune relative frequency per building).
-      int vanillaWeight = rawTemplates.stream().mapToInt(Pair::getSecond).sum();
-      int customTotalWeight;
+      // Done in long/double: the multipliers compound (config density x data-pack weight_multiplier can
+      // reach 10,000), and an int product silently wraps negative at high settings.
+      long vanillaWeight = rawTemplates.stream().mapToLong(Pair::getSecond).sum();
+      double customBudget;
       if (spawnChancePercent >= 100) {
          // Keep vanilla entries as a fallback for plot shapes our buildings don't fit,
          // but make custom buildings overwhelmingly likely wherever they do fit.
-         customTotalWeight = Math.max(1, vanillaWeight) * 50;
+         customBudget = Math.max(1L, vanillaWeight) * 50.0D;
       } else {
-         customTotalWeight = Math.max(1, vanillaWeight * spawnChancePercent / (100 - spawnChancePercent));
+         customBudget = Math.max(1.0D, (double) vanillaWeight * spawnChancePercent / (100 - spawnChancePercent));
       }
 
       // Per-pool multiplier lets one biome carry more or fewer custom buildings than another. A
@@ -159,9 +167,19 @@ public class VillageAddition {
          LOGGER.info("[DynamicVillage] Pool {}: density multiplier 0, skipping {} custom building(s)", poolRL, weighted.size());
          return;
       }
-      customTotalWeight = (int) Math.max(1L, Math.round(customTotalWeight * poolMultiplier));
+      customBudget *= poolMultiplier;
 
-      int totalRelative = weighted.stream().mapToInt(VillageBuildingEntry::weight).sum();
+      // The pool's `templates` list holds one element per weight unit, so the budget is also an allocation.
+      if (customBudget > MAX_CUSTOM_WEIGHT) {
+         LOGGER.warn(
+            "[DynamicVillage] Pool {}: custom building weight {} capped at {} (the pool is already overwhelmingly custom there).",
+            poolRL, Math.round(customBudget), MAX_CUSTOM_WEIGHT
+         );
+         customBudget = MAX_CUSTOM_WEIGHT;
+      }
+      int customTotalWeight = (int) Math.max(1L, Math.round(customBudget));
+
+      long totalRelative = weighted.stream().mapToLong(VillageBuildingEntry::weight).sum();
       int added = 0;
 
       for (VillageBuildingEntry entry : weighted) {
