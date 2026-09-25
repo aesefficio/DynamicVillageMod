@@ -31,6 +31,7 @@ import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.registries.RegisterEvent;
@@ -61,41 +62,119 @@ public final class ProfessionRegistrar {
     */
    private static Map<ProfessionDefinition, Set<BlockState>> usableDefinitions;
 
+   /*
+    * Professions and POIs live in separate registries whose RegisterEvents fire one after the other
+    * (currently professions first). Each pass can only check clashes against its own registry, so a
+    * definition refused by the first pass must also be skipped by the second. Tracking it this way keeps
+    * the pair consistent without depending on which event happens to fire first.
+    */
+   private static final Set<ResourceLocation> REJECTED = new HashSet<>();
+   private static final Set<ResourceLocation> REGISTERED_PROFESSIONS = new HashSet<>();
+   private static final Set<ResourceLocation> REGISTERED_POIS = new HashSet<>();
+
    private ProfessionRegistrar() {
    }
 
-   /** Wire this registrar onto the mod event bus (called from the mod constructor). */
+   /**
+    * Wire this registrar onto the mod event bus (called from the mod constructor). It listens at
+    * {@link EventPriority#LOWEST} so every other mod has already registered its entries for the same
+    * registry by the time the clash checks read it; checking any earlier misses them, and the real
+    * duplicate then crashes the game later in the same event.
+    */
    public static void register(IEventBus modEventBus) {
-      modEventBus.addListener(ProfessionRegistrar::onRegister);
+      modEventBus.addListener(EventPriority.LOWEST, ProfessionRegistrar::onRegister);
    }
 
    private static void onRegister(RegisterEvent event) {
-      // POIs first (they exist before professions reference them).
-      event.register(Registries.POINT_OF_INTEREST_TYPE, helper -> validate().forEach((def, states) -> {
-         helper.register(def.id(), new PoiType(ImmutableSet.copyOf(states), def.effectiveMaxTickets(), def.effectiveSearchDistance()));
-         LOGGER.info("[DynamicVillage] Registered POI {} ({} block state(s))", def.id(), states.size());
-      }));
-
+      // Clashes are checked here, against each live registry, not in the cached validate(): only inside
+      // a registry's own event (at LOWEST) is every other mod's entry for it guaranteed to be present.
       event.register(Registries.VILLAGER_PROFESSION, helper -> {
-         Map<ProfessionDefinition, Set<BlockState>> usable = validate();
-         for (ProfessionDefinition def : usable.keySet()) {
+         // Best-effort early check against POIs that already exist. Vanilla's are bootstrapped before any
+         // RegisterEvent, so the common case (a vanilla job-site block) skips the whole pair here instead of
+         // leaving a profession no villager can take. Mod POIs register later; the POI pass catches those.
+         Set<BlockState> existingClaims = new HashSet<>();
+         BuiltInRegistries.POINT_OF_INTEREST_TYPE.forEach(poi -> existingClaims.addAll(poi.matchingStates()));
+         int registered = 0;
+         for (ProfessionDefinition def : validate().keySet()) {
+            if (REJECTED.contains(def.id())) {
+               continue;
+            }
+            if (BuiltInRegistries.VILLAGER_PROFESSION.containsKey(def.id())) {
+               reject(def, "its id clashes with an already-registered profession");
+               continue;
+            }
+            BlockState earlyClash = firstAlreadyClaimed(validate().get(def), existingClaims);
+            if (earlyClash != null) {
+               reject(def, blockClashReason(earlyClash));
+               continue;
+            }
             ResourceKey<PoiType> poiKey = ResourceKey.create(Registries.POINT_OF_INTEREST_TYPE, def.id());
             Predicate<Holder<PoiType>> isJobSite = holder -> holder.is(poiKey);
             helper.register(
                def.id(),
                new VillagerProfession(def.id().getPath(), isJobSite, isJobSite, ImmutableSet.of(), ImmutableSet.of(), resolveSound(def.workSound()))
             );
+            REGISTERED_PROFESSIONS.add(def.id());
+            registered++;
             LOGGER.info("[DynamicVillage] Registered profession {}", def.id());
          }
-         if (!usable.isEmpty()) {
-            LOGGER.info("[DynamicVillage] Registered {} data-defined profession(s) from config.", usable.size());
+         if (registered > 0) {
+            LOGGER.info("[DynamicVillage] Registered {} data-defined profession(s) from config.", registered);
          }
+      });
+
+      event.register(Registries.POINT_OF_INTEREST_TYPE, helper -> {
+         Set<BlockState> claimed = new HashSet<>();
+         BuiltInRegistries.POINT_OF_INTEREST_TYPE.forEach(poi -> claimed.addAll(poi.matchingStates()));
+
+         validate().forEach((def, states) -> {
+            if (REJECTED.contains(def.id())) {
+               return;
+            }
+            if (BuiltInRegistries.POINT_OF_INTEREST_TYPE.containsKey(def.id())) {
+               reject(def, "its id clashes with an already-registered point-of-interest type");
+               return;
+            }
+            // Minecraft allows a block state to belong to exactly one POI type; registering a duplicate
+            // throws during the registry event and takes the whole game down, so refuse it here instead.
+            BlockState clash = firstAlreadyClaimed(states, claimed);
+            if (clash != null) {
+               reject(def, blockClashReason(clash));
+               return;
+            }
+
+            helper.register(def.id(), new PoiType(ImmutableSet.copyOf(states), def.effectiveMaxTickets(), def.effectiveSearchDistance()));
+            claimed.addAll(states); // so two config professions can't claim the same block either
+            REGISTERED_POIS.add(def.id());
+            LOGGER.info("[DynamicVillage] Registered POI {} ({} block state(s))", def.id(), states.size());
+         });
       });
    }
 
+   private static String blockClashReason(BlockState clash) {
+      return "block " + BuiltInRegistries.BLOCK.getKey(clash.getBlock())
+         + " already belongs to another point-of-interest type (a block state may only have one)";
+   }
+
+   /** Refuses a definition in both passes, explaining any half of the pair that was already registered. */
+   private static void reject(ProfessionDefinition def, String reason) {
+      REJECTED.add(def.id());
+      if (REGISTERED_PROFESSIONS.contains(def.id())) {
+         LOGGER.error(
+            "[DynamicVillage] Profession {}: {}. The profession itself was already registered, so it exists but no villager "
+               + "can ever take the job. Fix its job-site definition.",
+            def.id(), reason
+         );
+      } else if (REGISTERED_POIS.contains(def.id())) {
+         LOGGER.error("[DynamicVillage] Profession {}: {}; skipping. Its job site was already registered and stays unused.", def.id(), reason);
+      } else {
+         LOGGER.error("[DynamicVillage] Profession {}: {}; skipping.", def.id(), reason);
+      }
+   }
+
    /**
-    * Validates every definition exactly once and caches the result, so both registry passes agree and
-    * each problem is reported a single time. Insertion order is preserved for deterministic output.
+    * Config-level validation, done exactly once and cached so each problem is reported a single time.
+    * Registry clash checks are deliberately NOT here — they need the live registries, see onRegister.
     */
    private static synchronized Map<ProfessionDefinition, Set<BlockState>> validate() {
       if (usableDefinitions != null) {
@@ -104,10 +183,6 @@ public final class ProfessionRegistrar {
 
       Map<ProfessionDefinition, Set<BlockState>> usable = new LinkedHashMap<>();
       Set<ResourceLocation> seen = new HashSet<>();
-      // Every block state already spoken for by a registered POI type, plus the ones our own accepted
-      // definitions claim as we go, so two config professions can't fight over the same block either.
-      Set<BlockState> claimed = new HashSet<>();
-      BuiltInRegistries.POINT_OF_INTEREST_TYPE.forEach(poi -> claimed.addAll(poi.matchingStates()));
 
       for (ProfessionDefinition def : definitions()) {
          if (def.jobSiteTag().isPresent()) {
@@ -126,10 +201,6 @@ public final class ProfessionRegistrar {
             LOGGER.error("[DynamicVillage] Profession {} is defined more than once in config; keeping the first and skipping this one.", def.id());
             continue;
          }
-         if (BuiltInRegistries.VILLAGER_PROFESSION.containsKey(def.id()) || BuiltInRegistries.POINT_OF_INTEREST_TYPE.containsKey(def.id())) {
-            LOGGER.error("[DynamicVillage] Profession {} clashes with an already-registered profession/POI id; skipping.", def.id());
-            continue;
-         }
          if (!LoadCondition.allMet(def.conditions())) {
             LOGGER.info("[DynamicVillage] Profession {} skipped: its conditions are not met.", def.id());
             continue;
@@ -140,20 +211,6 @@ public final class ProfessionRegistrar {
             LOGGER.warn("[DynamicVillage] Profession {}: none of its job-site blocks are registered (mod not installed?); skipping.", def.id());
             continue;
          }
-
-         // Minecraft allows a block state to belong to exactly one POI type; registering a duplicate
-         // throws during the registry event and takes the whole game down, so refuse it here instead.
-         BlockState clash = firstAlreadyClaimed(states, claimed);
-         if (clash != null) {
-            LOGGER.error(
-               "[DynamicVillage] Profession {}: block {} already belongs to another point-of-interest type "
-                  + "(a block state may only have one). Pick a different job-site block; skipping.",
-               def.id(), BuiltInRegistries.BLOCK.getKey(clash.getBlock())
-            );
-            continue;
-         }
-
-         claimed.addAll(states);
          usable.put(def, states);
       }
 

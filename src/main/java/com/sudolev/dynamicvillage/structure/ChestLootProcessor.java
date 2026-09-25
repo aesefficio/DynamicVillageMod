@@ -9,7 +9,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
@@ -58,6 +60,20 @@ public class ChestLootProcessor extends StructureProcessor {
       }
 
       CompoundTag nbt = relative.nbt();
+
+      // A double chest is two blocks, and vanilla rolls each half's loot table separately when opened, so
+      // stamping both halves doubles the loot. Only the LEFT half (or a single chest) carries the table;
+      // mirroring swaps LEFT/RIGHT on both halves together, so exactly one half always qualifies.
+      if (state.hasProperty(ChestBlock.TYPE) && state.getValue(ChestBlock.TYPE) == ChestType.RIGHT) {
+         if (overrideExisting && nbt != null && nbt.contains("LootTable")) {
+            // The partner half is being overridden; drop this half's authored table so the pair rolls once.
+            CompoundTag stripped = nbt.copy();
+            stripped.remove("LootTable");
+            stripped.remove("LootTableSeed");
+            return new StructureTemplate.StructureBlockInfo(relative.pos(), state, stripped);
+         }
+         return relative;
+      }
       if (nbt != null && nbt.contains("LootTable") && !overrideExisting) {
          return relative; // hand-authored loot chest: leave it alone
       }

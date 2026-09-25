@@ -1,5 +1,24 @@
 # Changelog
 
+## v0.9.1 — Bug fixes
+
+Fixes from an automated, adversarially verified review of v0.9.
+
+- **Double chests now roll loot once.** The loot table was stamped onto both halves of a double chest,
+  and each half rolls separately when opened, so double chests gave twice the intended loot. This
+  affected 14 double chests across 11 of the 20 buildings. Only one half now carries the table.
+- **Fixed a possible startup crash with config-defined professions.** The duplicate-id and job-site
+  checks ran before other mods had registered their professions and job sites, so a clash could slip
+  through and crash the game later in the same registration step. The checks now run against the live
+  registries after every other mod has registered. A profession whose job-site block already belongs to
+  another job site (e.g. a vanilla one like the lodestone) is skipped entirely, with an explanation in
+  the log.
+- **Maximum density settings no longer backfire.** Combining a very high `buildingSpawnChancePercent`,
+  `biomeDensity`, and data pack `weight_multiplier` could overflow the weight calculation and silently
+  collapse a pool back to near-vanilla density — or, just below that point, grow a pool to millions of
+  entries. The math is now overflow-safe, and each pool's custom weight is capped at 50,000 (already over
+  99% custom), with a log warning when the cap applies.
+
 ## v0.9 — Village Shape
 
 Rebuilt every building, and added control over how big villages are and how much of them is this mod.
